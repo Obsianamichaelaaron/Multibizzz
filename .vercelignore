@@ -7,7 +7,6 @@ media/
 !media/.gitkeep
 
 # Database and data dumps
-*.sqlite3
 *.sql
 
 # Testing suite and scratch scripts

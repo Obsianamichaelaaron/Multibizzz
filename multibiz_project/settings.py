@@ -117,7 +117,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'multibiz_project.wsgi.application'
 
-# Use Render/PostgreSQL when DATABASE_URL is present; keep SQLite for local use.
+# Database Configuration
+# Use PostgreSQL/MySQL when DATABASE_URL is present; otherwise use SQLite (with /tmp support for serverless).
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL and DATABASE_URL.strip():
     DATABASES = {
@@ -128,10 +129,23 @@ if DATABASE_URL and DATABASE_URL.strip():
         )
     }
 else:
+    # Serverless runtime (e.g., Vercel / AWS Lambda) has a read-only root (/var/task).
+    # Redirect SQLite storage to the writable /tmp partition and copy bundled DB if present.
+    sqlite_db_path = BASE_DIR / 'db.sqlite3'
+    if os.environ.get('VERCEL') or not os.access(str(BASE_DIR), os.W_OK):
+        import shutil
+        tmp_db_path = Path('/tmp') / 'db.sqlite3'
+        if sqlite_db_path.exists() and not tmp_db_path.exists():
+            try:
+                shutil.copy2(str(sqlite_db_path), str(tmp_db_path))
+            except Exception:
+                pass
+        sqlite_db_path = tmp_db_path
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+            'NAME': str(sqlite_db_path),
         }
     }
 
