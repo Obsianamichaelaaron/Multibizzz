@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Candidate Pipeline - Multibiz{% endblock %}
+
+{% block extra_css %}
+<style>
+    .pipeline-tab-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: var(--mb-radius-pill);
+        background: #f8fafc;
+        border: 1px solid var(--mb-border);
+        color: var(--mb-text-secondary);
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all var(--mb-transition-fast);
+    }
+    .pipeline-tab-pill:hover {
+        background: #eff6ff;
+        border-color: var(--mb-primary);
+        color: var(--mb-primary);
+    }
+    .pipeline-tab-pill.active {
+        background: var(--mb-primary-gradient);
+        border-color: var(--mb-primary);
+        color: #ffffff !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+    .pipeline-tab-pill.active .badge-count {
+        background: rgba(255, 255, 255, 0.25);
+        color: #ffffff;
+    }
+    .badge-count {
+        background: #e2e8f0;
+        color: #475569;
+        font-size: 0.72rem;
+        padding: 0.15rem 0.45rem;
+        border-radius: 10px;
+        font-weight: 700;
+    }
+    .candidate-row-card {
+        transition: background var(--mb-transition-fast);
+    }
+    .candidate-row-card:hover {
+        background: #f8fafc;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    
+    <!-- Top Hero Header Banner (Dark Enterprise Palette) -->
+    <div class="employer-hero-banner">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 position-relative" style="z-index: 1;">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1 small text-white-50">
+                        <li class="breadcrumb-item"><a href="{% url 'employer_dashboard' %}" class="text-white-50 text-decoration-none">Dashboard</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">Candidate Pipeline</li>
+                    </ol>
+                </nav>
+                <div class="d-flex align-items-center gap-2 mt-1">
+                    <h3 class="fw-extrabold text-white mb-0">
+                        <i class="fa-solid fa-users-viewfinder text-info me-2"></i>Candidate Pipeline
+                    </h3>
+                    <span class="badge bg-primary bg-opacity-25 text-white border border-primary border-opacity-50 rounded-pill px-2.5 py-1 small fw-semibold">
+                        <i class="fa-solid fa-bolt me-1 text-warning"></i> Auto TF-IDF Engine
+                    </span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                    <a href="{% url 'recommended_candidates' %}" class="btn btn-outline-light btn-sm px-3 py-2 shadow-sm">
+                    <i class="fa-solid fa-wand-magic-sparkles text-warning me-1"></i> AI Talent Sourcing
+                </a>
+                    <a href="{% url 'employer_post_job' %}" class="btn btn-primary-custom btn-sm px-3 py-2 shadow-sm">
+                    <i class="fa-solid fa-plus-circle me-1"></i> Post New Vacancy
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pipeline Stage Filter Tabs -->
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        <a href="?{% if selected_job_id %}job_id={{ selected_job_id }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if selected_sort %}sort={{ selected_sort }}&{% endif %}{% if query %}q={{ query }}&{% endif %}" 
+           class="pipeline-tab-pill {% if not selected_status %}active{% endif %}">
+            <i class="fa-solid fa-layer-group"></i> All Inquiries <span class="badge-count">{{ status_counts.all }}</span>
+        </a>
+        <a href="?status=pending{% if selected_job_id %}&job_id={{ selected_job_id }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}{% if query %}&q={{ query }}{% endif %}" 
+           class="pipeline-tab-pill {% if selected_status == 'pending' %}active{% endif %}">
+            <i class="fa-solid fa-clock text-warning"></i> Pending Review <span class="badge-count">{{ status_counts.pending }}</span>
+        </a>
+        <a href="?status=shortlisted{% if selected_job_id %}&job_id={{ selected_job_id }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}{% if query %}&q={{ query }}{% endif %}" 
+           class="pipeline-tab-pill {% if selected_status == 'shortlisted' %}active{% endif %}">
+            <i class="fa-solid fa-star text-info"></i> Shortlisted <span class="badge-count">{{ status_counts.shortlisted }}</span>
+        </a>
+        <a href="?status=interviewed{% if selected_job_id %}&job_id={{ selected_job_id }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}{% if query %}&q={{ query }}{% endif %}" 
+           class="pipeline-tab-pill {% if selected_status == 'interviewed' %}active{% endif %}">
+            <i class="fa-solid fa-video text-primary"></i> Interview Scheduled <span class="badge-count">{{ status_counts.interviewed }}</span>
+        </a>
+        <a href="?status=accepted{% if selected_job_id %}&job_id={{ selected_job_id }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}{% if query %}&q={{ query }}{% endif %}" 
+           class="pipeline-tab-pill {% if selected_status == 'accepted' %}active{% endif %}">
+            <i class="fa-solid fa-circle-check text-success"></i> Accepted / Hired <span class="badge-count">{{ status_counts.accepted }}</span>
+        </a>
+        <a href="?status=rejected{% if selected_job_id %}&job_id={{ selected_job_id }}{% endif %}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if selected_sort %}&sort={{ selected_sort }}{% endif %}{% if query %}&q={{ query }}{% endif %}" 
+           class="pipeline-tab-pill {% if selected_status == 'rejected' %}active{% endif %}">
+            <i class="fa-solid fa-circle-xmark text-secondary"></i> Rejected <span class="badge-count">{{ status_counts.rejected }}</span>
+        </a>
+    </div>
+
+    <!-- Search and Multi-Filter Toolbar Card -->
+    <div class="custom-card p-3 bg-white border-0 shadow-sm rounded-4 mb-4">
+        <form method="GET" action="{% url 'employer_candidates' %}">
+            {% if selected_status %}
+                <input type="hidden" name="status" value="{{ selected_status }}">
+            {% endif %}
+
+            <div class="row g-2 align-items-center">
+                <!-- Search Input -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light text-muted border-end-0"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input type="text" name="q" value="{{ query }}" class="form-control bg-light border-start-0" placeholder="Search candidate, skill, keyword...">
+                    </div>
+                </div>
+
+                <!-- Position Select -->
+                <div class="col-lg-3 col-md-6">
+                    <select name="job_id" class="form-select bg-light" onchange="this.form.submit()">
+                        <option value="">All Posted Openings</option>
+                        {% for j in posted_jobs %}
+                            <option value="{{ j.id }}" {% if selected_job_id == j.id|stringformat:"i" %}selected{% endif %}>{{ j.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- ML Ranking Category Select -->
+                <div class="col-lg-2 col-md-6">
+                    <select name="category" class="form-select bg-light" onchange="this.form.submit()">
+                        <option value="">All AI Fit Tiers</option>
+                        <option value="excellent" {% if selected_category == 'excellent' %}selected{% endif %}>⭐ Excellent Fit (85%+)</option>
+                        <option value="good" {% if selected_category == 'good' %}selected{% endif %}>👍 Good Match (70%-84%)</option>
+                        <option value="average" {% if selected_category == 'average' %}selected{% endif %}>⚖️ Average Match (50%-69%)</option>
+                        <option value="poor" {% if selected_category == 'poor' %}selected{% endif %}>⚠️ Needs Review (&lt;50%)</option>
+                    </select>
+                </div>
+
+                <!-- Sort Criterion -->
+                <div class="col-lg-2 col-md-6">
+                    <select name="sort" class="form-select bg-light" onchange="this.form.submit()">
+                        <option value="score" {% if selected_sort == 'score' %}selected{% endif %}>AI Score (High to Low)</option>
+                        <option value="recent" {% if selected_sort == 'recent' %}selected{% endif %}>Recently Applied</option>
+                        <option value="exp" {% if selected_sort == 'exp' %}selected{% endif %}>Most Experienced</option>
+                        <option value="name" {% if selected_sort == 'name' %}selected{% endif %}>Name (A-Z)</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button & Reset -->
+                <div class="col-lg-2 col-md-12 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary-custom flex-grow-1">
+                        <i class="fa-solid fa-filter"></i> Apply Filter
+                    </button>
+                    {% if query or selected_job_id or selected_status or selected_category or selected_sort != 'score' %}
+                        <a href="{% url 'employer_candidates' %}" class="btn btn-outline-secondary" title="Clear Filters">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Results Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center gap-2">
+            <span class="fw-bold text-dark fs-6">
+                <i class="fa-solid fa-users text-primary me-2"></i>Filtered Applicants ({{ candidates_data|length }})
+            </span>
+            <span class="badge bg-light text-muted border small d-none d-sm-inline-block">Auto TF-IDF Match Algorithm</span>
+        </div>
+    </div>
+
+    <!-- CANDIDATES GRID VIEW -->
+    <div class="row g-4">
+        {% for item in candidates_data %}
+            <div class="col-md-6 col-xl-4">
+                <div class="candidate-grid-card shadow-sm h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="d-flex align-items-center gap-3">
+                                {% if item.application.applicant.profile_pic %}
+                                    <img src="{{ item.application.applicant.profile_pic.url }}" class="rounded-circle shadow-sm" style="width: 48px; height: 48px; object-fit: cover;" alt="{{ item.application.applicant.user.full_name }}">
+                                {% else %}
+                                    <div class="company-avatar-box rounded-circle fw-bold" style="width: 48px; height: 48px; font-size: 1.2rem;">
+                                        {{ item.application.applicant.user.first_name|slice:":1"|upper }}
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <h6 class="fw-bold text-dark mb-0">{{ item.application.applicant.user.full_name }}</h6>
+                                    <div class="text-muted small">{{ item.application.applicant.education_level|default:"Graduate" }}</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-match badge-match-{{ item.ranking_category }} shadow-sm">
+                                <i class="fa-solid fa-bolt text-warning"></i> {{ item.ml_score }}%
+                            </span>
+                        </div>
+
+                        <div class="p-2 bg-light rounded-3 small mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-muted">Target Position:</span>
+                                <strong class="text-dark text-truncate" style="max-width: 170px;">{{ item.application.job.title }}</strong>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Experience:</span>
+                                <span><strong>{{ item.application.applicant.experience_years }}</strong> Years</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="text-muted small fw-semibold mb-1">Candidate Skill Stack:</div>
+                            <div class="d-flex flex-wrap gap-1">
+                                {% for s in item.skills %}
+                                    <span class="skill-chip py-0 px-2" style="font-size: 0.72rem;">{{ s }}</span>
+                                {% empty %}
+                                    <span class="text-muted small">No skills listed</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-top pt-3 mt-3 d-flex justify-content-between align-items-center">
+                        <span class="badge badge-status badge-status-{{ item.application.status }}">
+                            {{ item.application.get_status_display }}
+                        </span>
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'chat_thread' item.application.applicant.user.id %}" class="btn btn-sm btn-outline-secondary" title="Direct Message">
+                                <i class="fa-solid fa-comment-dots"></i>
+                            </a>
+                            <a href="{% url 'employer_candidate_detail' item.application.pk %}" class="btn btn-sm btn-primary-custom px-3">
+                                Review Dossier
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center py-5 text-muted">
+                <i class="fa-solid fa-users-slash display-4 mb-3 opacity-50"></i>
+                <h5 class="fw-bold text-dark">No Candidates Found</h5>
+                <p class="text-secondary small">Try changing search filters or keywords.</p>
+                <div class="d-flex justify-content-center gap-2 mt-2">
+                    <a href="{% url 'employer_candidates' %}" class="btn btn-sm btn-outline-secondary">Reset Filters</a>
+                    <a href="{% url 'recommended_candidates' %}" class="btn btn-sm btn-primary-custom">Source Talent with AI</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

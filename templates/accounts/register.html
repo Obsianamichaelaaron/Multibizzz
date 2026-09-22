@@ -1,0 +1,1057 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Account - Multibiz Intelligence{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* ==========================================================================
+       AUTH REGISTER PAGE PROFESSIONAL DESIGN SYSTEM
+       ========================================================================== */
+    .auth-page-section {
+        min-height: calc(100vh - 72px);
+        background: var(--surface-bg);
+        display: flex;
+        align-items: center;
+        padding: 2.5rem 1rem;
+        position: relative;
+    }
+
+    .auth-bg-blob {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        filter: blur(100px);
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.16;
+    }
+    .auth-bg-blob-1 {
+        top: -80px;
+        right: 12%;
+        background: linear-gradient(135deg, #93c5fd, #bfdbfe);
+    }
+    .auth-bg-blob-2 {
+        bottom: -80px;
+        left: 12%;
+        background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+    }
+
+    /* Auth Card Container */
+    .auth-card {
+        background: #ffffff;
+        border: 1px solid rgba(100, 116, 139, 0.55);
+        border-radius: 16px;
+        box-shadow: 0 12px 30px -18px rgba(15, 23, 42, 0.28), 0 1px 2px rgba(15, 23, 42, 0.04);
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        max-width: 760px;
+        margin-inline: auto;
+    }
+
+    /* Modern Segmented Role Selector */
+    .register-role-switcher {
+        position: relative;
+        z-index: 2;
+    }
+
+    .role-choice-panel {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .role-choice-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        min-height: 150px;
+        border: 1.5px solid #94a3b8;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        border-radius: 16px;
+        padding: 1.25rem 1rem;
+        color: #0f172a;
+        text-decoration: none;
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
+    }
+
+    .role-choice-card:hover {
+        transform: translateY(-2px);
+        border-color: #93c5fd;
+        box-shadow: 0 12px 22px rgba(37, 99, 235, 0.08);
+        text-decoration: none;
+        color: #0f172a;
+    }
+
+    .role-choice-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, rgba(37,99,235,0.12), rgba(147,197,253,0.2));
+        color: #1d4ed8;
+        font-size: 1.35rem;
+    }
+
+    .role-choice-title {
+        font-size: 1.02rem;
+        font-weight: 800;
+        text-align: center;
+        line-height: 1.3;
+    }
+
+    .role-choice-description {
+        font-size: 0.8rem;
+        color: #64748b;
+        text-align: center;
+        line-height: 1.5;
+    }
+
+    .role-segmented-box {
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        padding: 4px;
+        display: flex !important;
+        gap: 4px;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .role-segmented-btn {
+        flex: 1;
+        border: none;
+        background: transparent;
+        color: #475569;
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.92rem;
+        transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .role-segmented-btn .btn-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.95rem;
+        font-weight: 700;
+    }
+
+    .role-segmented-btn:hover:not(.active) {
+        background: rgba(255, 255, 255, 0.6);
+        color: #0f172a;
+    }
+
+    .role-segmented-btn.active {
+        background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%) !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.22);
+    }
+
+    /* Modern Form Controls */
+    .form-label-modern {
+        font-size: 0.83rem;
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 0.45rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .input-group-modern {
+        position: relative;
+        display: flex;
+        align-items: stretch;
+        width: 100%;
+        border-radius: 8px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .input-group-modern .input-group-text {
+        background-color: #f8fafc;
+        border: 1.5px solid #cbd5e1;
+        border-right: none;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        color: #64748b;
+        font-size: 0.95rem;
+        padding: 0.6rem 0.85rem;
+        transition: all 0.2s ease;
+    }
+
+    .input-group-modern .form-control {
+        border: 1.5px solid #cbd5e1;
+        border-left: none;
+        border-radius: 0;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        font-size: 0.9rem;
+        padding: 0.6rem 0.85rem;
+        background-color: #ffffff;
+        color: #0f172a;
+        font-weight: 500;
+        min-height: 43px;
+        transition: all 0.2s ease;
+    }
+
+    .input-group-modern.has-toggle .form-control {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right: none;
+    }
+
+    .input-group-modern .btn-toggle-pwd {
+        background-color: #f8fafc;
+        border: 1.5px solid #cbd5e1;
+        border-left: none;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        color: #64748b;
+        padding: 0.6rem 0.85rem;
+        min-width: 44px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .input-group-modern .btn-toggle-pwd:hover {
+        color: #0f172a;
+        background-color: #f1f5f9;
+    }
+
+    .input-group-modern:focus-within .input-group-text,
+    .input-group-modern:focus-within .btn-toggle-pwd {
+        border-color: #3b82f6;
+        background-color: #eff6ff;
+        color: #2563eb;
+    }
+
+    .input-group-modern:focus-within .form-control {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
+        outline: none;
+    }
+
+    .input-group-modern.is-invalid .input-group-text,
+    .input-group-modern.is-invalid .form-control,
+    .input-group-modern.is-invalid .btn-toggle-pwd {
+        border-color: #ef4444 !important;
+        background-color: #fef2f2 !important;
+    }
+
+    /* Primary Submit Button */
+    .btn-submit-modern {
+        background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        padding: 0.7rem 1.25rem;
+        font-size: 0.98rem;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .btn-submit-modern:hover {
+        background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 16px rgba(37, 99, 235, 0.28);
+    }
+
+    .btn-submit-modern:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+    }
+
+    /* Password Strength Meter */
+    .pwd-strength-container {
+        margin-top: 0.4rem;
+        font-size: 0.75rem;
+    }
+    .pwd-strength-bars {
+        display: flex;
+        gap: 4px;
+        height: 4px;
+        margin-bottom: 4px;
+    }
+    .pwd-strength-bar {
+        flex: 1;
+        height: 100%;
+        background: #e2e8f0;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+    .pwd-strength-text {
+        font-weight: 600;
+        color: #64748b;
+    }
+
+    .auth-page-title {
+        font-size: 1.55rem;
+        letter-spacing: -0.02em;
+    }
+
+    .auth-page-subtitle {
+        max-width: 34rem;
+        margin-inline: auto;
+        line-height: 1.5;
+    }
+
+    .register-stepper {
+        margin: 0 0 1.5rem;
+    }
+
+    .register-stepper-track {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 0.25rem 0;
+    }
+
+    .register-stepper-track::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 15px;
+        height: 1px;
+        background: #94a3b8;
+        z-index: 0;
+    }
+
+    .register-stepper-step {
+        position: relative;
+        z-index: 1;
+        flex: 1;
+        text-align: center;
+        color: #64748b;
+        min-width: 0;
+    }
+
+    .register-stepper-step.active {
+        color: #0f172a;
+    }
+
+    .register-stepper-step.active .register-stepper-dot {
+        background: #0b5bd3;
+        border-color: #0b5bd3;
+        box-shadow: 0 0 0 3px rgba(11, 91, 211, 0.12);
+    }
+
+    .register-stepper-dot {
+        display: block;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #94a3b8;
+        margin: 0 auto 0.65rem;
+        transition: all 0.2s ease;
+    }
+
+    .register-stepper-label {
+        font-size: 0.75rem;
+        line-height: 1.3;
+        display: block;
+        max-width: 120px;
+        margin: 0 auto;
+        font-weight: 500;
+    }
+
+    .register-form-step {
+        display: none;
+        animation: registerFadeIn 0.2s ease;
+    }
+
+    .register-form-step.active {
+        display: block;
+    }
+
+    .employer-single-page .register-form-step {
+        display: block;
+        margin-bottom: 1rem;
+        animation: none;
+    }
+
+    .employer-single-page .register-step-actions.employer-hidden-action {
+        display: none;
+    }
+
+    .employer-single-page .register-step-actions.employer-submit-action {
+        justify-content: center;
+        margin-top: 0;
+    }
+    .employer-single-page .input-group-modern .input-group-text,
+    .employer-single-page .input-group-modern .form-control,
+    .employer-single-page .input-group-modern .btn-toggle-pwd {
+        border-color: #64748b;
+    }
+
+    .employer-single-page .register-summary-box {
+        display: none;
+    }
+
+    .employer-single-page .next-step,
+    .employer-single-page .prev-step {
+        display: none;
+    }
+
+    @keyframes registerFadeIn {
+        from { opacity: 0; transform: translateY(4px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .register-step-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-top: 1.25rem;
+        padding-top: 1rem;
+        border-top: 1px solid #edf2f7;
+    }
+
+    .register-step-btn {
+        border-radius: 10px;
+        padding: 0.7rem 1.15rem;
+        font-size: 0.92rem;
+        font-weight: 700;
+        border: 1px solid transparent;
+    }
+
+    .register-step-btn.secondary {
+        background: #fff;
+        border-color: #cbd5e1;
+        color: #334155;
+    }
+
+    .register-step-btn.primary {
+        background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.18);
+    }
+
+    .register-summary-box {
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        border-radius: 0.9rem;
+        padding: 1rem 1rem 0.75rem;
+    }
+
+    .auth-card .form-control:focus,
+    .auth-card button:focus-visible {
+        outline: 3px solid rgba(37, 99, 235, 0.18);
+        outline-offset: 1px;
+    }
+
+    @media (max-width: 575.98px) {
+        .auth-page-section {
+            align-items: flex-start;
+            padding: 1.5rem 0.75rem;
+        }
+
+        .auth-card {
+            padding: 1.5rem !important;
+        }
+
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="auth-page-section">
+    <!-- Ambient Blur Background Accents -->
+    <div class="auth-bg-blob auth-bg-blob-1"></div>
+    <div class="auth-bg-blob auth-bg-blob-2"></div>
+
+    <div class="container position-relative" style="z-index: 1;">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+                <div class="auth-card p-4 p-md-5">
+                    
+                    <!-- Top Brand & Header Section -->
+                    <div class="text-center mb-4">
+                        <h3 class="fw-extrabold text-dark tracking-tight mb-1" style="font-size: 1.65rem;">Create Your Account</h3>
+                    </div>
+
+                    {% if not active_tab %}
+                        <div class="role-choice-panel">
+                            <a href="{% url 'register' %}?tab=applicant" class="role-choice-card">
+                                <span class="role-choice-icon"><i class="fa-solid fa-user-graduate"></i></span>
+                                <span class="role-choice-title">I'm a Jobseeker</span>
+                                <span class="role-choice-description">Apply for jobs and manage your profile.</span>
+                            </a>
+                            <a href="{% url 'register' %}?tab=employer" class="role-choice-card">
+                                <span class="role-choice-icon"><i class="fa-solid fa-building-circle-check"></i></span>
+                                <span class="role-choice-title">I'm an Employer</span>
+                                <span class="role-choice-description">Hire talent and post vacancies.</span>
+                            </a>
+                        </div>
+                    {% else %}
+                        {% if active_tab == 'applicant' %}
+                        <div class="register-stepper" aria-label="Account setup progress">
+                            <div class="register-stepper-track">
+                                <div class="register-stepper-step active" data-step="1">
+                                    <span class="register-stepper-dot"></span>
+                                    <span class="register-stepper-label">Choose documents</span>
+                                </div>
+                                <div class="register-stepper-step" data-step="2">
+                                    <span class="register-stepper-dot"></span>
+                                    <span class="register-stepper-label">Answer employer questions</span>
+                                </div>
+                                <div class="register-stepper-step" data-step="3">
+                                    <span class="register-stepper-dot"></span>
+                                    <span class="register-stepper-label">Update profile</span>
+                                </div>
+                                <div class="register-stepper-step" data-step="4">
+                                    <span class="register-stepper-dot"></span>
+                                    <span class="register-stepper-label">Review and submit</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                    {% endif %}
+
+                    {% if active_tab %}
+                    <!-- TAB CONTENT CONTAINERS -->
+                    <div class="tab-content">
+                        
+                        <!-- ==========================================
+                             APPLICANT / JOBSEEKER REGISTRATION FORM
+                             ========================================== -->
+                        <div class="tab-pane fade {% if active_tab != 'employer' %}show active{% endif %}" id="applicant-form-pane" role="tabpanel">
+                            <form method="POST" action="{% url 'register' %}" id="applicantRegisterForm" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="form_type" value="applicant">
+
+                                {% if applicant_form.non_field_errors %}
+                                    <div class="alert alert-danger py-2 px-3 small rounded-3 mb-3 border-0 bg-danger bg-opacity-10 text-danger fw-semibold">
+                                        {% for err in applicant_form.non_field_errors %}
+                                            <div><i class="fa-solid fa-circle-exclamation me-1.5"></i> {{ err }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+
+                                <div class="register-form-step active" data-step="1">
+                                    <div class="row g-3 mb-3">
+                                        <!-- First Name -->
+                                        <div class="col-sm-6">
+                                            <label class="form-label-modern">
+                                                <i class="fa-regular fa-user text-muted"></i> First Name
+                                            </label>
+                                            <div class="input-group-modern {% if applicant_form.first_name.errors %}is-invalid{% endif %}">
+                                                <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                                                {{ applicant_form.first_name }}
+                                            </div>
+                                            {% if applicant_form.first_name.errors %}
+                                                <div class="text-danger small mt-1 fw-semibold" style="font-size: 0.75rem;">{{ applicant_form.first_name.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Last Name -->
+                                        <div class="col-sm-6">
+                                            <label class="form-label-modern">
+                                                <i class="fa-regular fa-user text-muted"></i> Last Name
+                                            </label>
+                                            <div class="input-group-modern {% if applicant_form.last_name.errors %}is-invalid{% endif %}">
+                                                <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                                                {{ applicant_form.last_name }}
+                                            </div>
+                                            {% if applicant_form.last_name.errors %}
+                                                <div class="text-danger small mt-1 fw-semibold" style="font-size: 0.75rem;">{{ applicant_form.last_name.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Email Address -->
+                                        <div class="col-sm-6">
+                                            <label class="form-label-modern">
+                                                <i class="fa-regular fa-envelope text-muted"></i> Email Address
+                                            </label>
+                                            <div class="input-group-modern {% if applicant_form.email.errors %}is-invalid{% endif %}">
+                                                <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+                                                {{ applicant_form.email }}
+                                            </div>
+                                            {% if applicant_form.email.errors %}
+                                                <div class="text-danger small mt-1 fw-semibold" style="font-size: 0.75rem;">{{ applicant_form.email.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Phone Number -->
+                                        <div class="col-sm-6">
+                                            <label class="form-label-modern">
+                                                <i class="fa-solid fa-phone text-muted"></i> Contact Phone
+                                            </label>
+                                            <div class="input-group-modern">
+                                                <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                                                {{ applicant_form.phone }}
+                                            </div>
+                                        </div>
+
+                                        <!-- Resume File -->
+                                        <div class="col-12">
+                                            <label class="form-label-modern">
+                                                <i class="fa-regular fa-file-lines text-muted"></i> Resume / CV (optional)
+                                            </label>
+                                            <div class="input-group-modern {% if applicant_form.resume_file.errors %}is-invalid{% endif %}">
+                                                <span class="input-group-text"><i class="fa-solid fa-file-arrow-up"></i></span>
+                                                {{ applicant_form.resume_file }}
+                                            </div>
+                                            <div class="text-muted small mt-1">PDF, DOC, or DOCX. This resume will be saved to your profile and used automatically when applying for jobs.</div>
+                                            {% if applicant_form.resume_file.errors %}
+                                                <div class="text-danger small mt-1 fw-semibold" style="font-size: 0.75rem;">{{ applicant_form.resume_file.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Password -->
+                                        <div class="col-sm-6">
+                                            <label class="form-label-modern">
+                                                <i class="fa-solid fa-lock text-muted"></i> Password
+                                            </label>
+                                            <div class="input-group-modern {% if applicant_form.password.errors %}is-invalid{% endif %}">
+                                                <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                                                {{ applicant_form.password }}
+                                            </div>
+                                            {% if applicant_form.password.errors %}
+                                                <div class="text-danger small mt-1 fw-semibold" style="font-size: 0.75rem;">{{ applicant_form.password.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Confirm Password -->
+                                        <div class="col-sm-6">
+                                            <label class="form-label-modern">
+                                                <i class="fa-solid fa-shield-check text-muted"></i> Confirm Password
+                                            </label>
+                                            <div class="input-group-modern {% if applicant_form.confirm_password.errors %}is-invalid{% endif %}">
+                                                <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                                                {{ applicant_form.confirm_password }}
+                                            </div>
+                                            {% if applicant_form.confirm_password.errors %}
+                                                <div class="text-danger small mt-1 fw-semibold" style="font-size: 0.75rem;">{{ applicant_form.confirm_password.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="register-step-actions">
+                                        <span></span>
+                                        <button type="button" class="register-step-btn primary next-step" data-form="applicant">Next</button>
+                                    </div>
+                                </div>
+
+                                <div class="register-form-step" data-step="2">
+                                    <div class="mb-4">
+                                        <h5 class="fw-bold text-dark mb-3">Answer employer questions</h5>
+
+                                        <div class="mb-4">
+                                            <label class="form-label-modern mb-2">Which of the following statements best describes your right to work in the Philippines?</label>
+                                            <select class="form-select form-control" name="right_to_work" aria-label="Right to work option">
+                                                <option value="">Please make a selection</option>
+                                                <option value="Filipino citizen">I'm a Filipino citizen</option>
+                                                <option value="Permanent resident">I'm a Philippines permanent resident</option>
+                                                <option value="Special Work Permit (SWP)">I have a Special Work Permit (SWP)</option>
+                                                <option value="Provisional Work Permit (PWP)">I have a Provisional Work Permit (PWP)</option>
+                                                <option value="Alien Employment Permit (AEP)">I have an Alien Employment Permit (AEP)</option>
+                                                <option value="Visa but not work">I have a visa that lets me stay in the Philippines, but not work</option>
+                                                <option value="Require sponsorship">I require sponsorship to work for a new employer in the Philippines</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label class="form-label-modern mb-2">What's your expected monthly basic salary?</label>
+                                            <select class="form-select form-control" name="expected_salary" aria-label="Expected salary option">
+                                                <option value="">Please make a selection</option>
+                                                <option value="₱6K">₱6K</option>
+                                                <option value="₱8K">₱8K</option>
+                                                <option value="₱10K">₱10K</option>
+                                                <option value="₱12K">₱12K</option>
+                                                <option value="₱14K">₱14K</option>
+                                                <option value="₱15K">₱15K</option>
+                                                <option value="₱16K">₱16K</option>
+                                                <option value="₱18K">₱18K</option>
+                                                <option value="₱20K">₱20K</option>
+                                                <option value="₱25K">₱25K</option>
+                                                <option value="₱30K">₱30K</option>
+                                                <option value="₱35K">₱35K</option>
+                                                <option value="₱40K">₱40K</option>
+                                                <option value="₱45K">₱45K</option>
+                                                <option value="₱50K">₱50K</option>
+                                                <option value="₱55K">₱55K</option>
+                                                <option value="₱60K">₱60K</option>
+                                                <option value="₱70K">₱70K</option>
+                                                <option value="₱80K">₱80K</option>
+                                                <option value="₱100K">₱100K</option>
+                                                <option value="₱120K">₱120K</option>
+                                                <option value="₱150K or more">₱150K or more</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label class="form-label-modern mb-2">How many years' experience do you have as a Customer Relations Assistant?</label>
+                                            <select class="form-select form-control" name="years_experience" aria-label="Experience option">
+                                                <option value="">Please make a selection</option>
+                                                <option value="No experience">No experience</option>
+                                                <option value="Less than 1 year">Less than 1 year</option>
+                                                <option value="1 year">1 year</option>
+                                                <option value="2 years">2 years</option>
+                                                <option value="3 years">3 years</option>
+                                                <option value="4 years">4 years</option>
+                                                <option value="5 years">5 years</option>
+                                                <option value="More than 5 years">More than 5 years</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label class="form-label-modern mb-2">Which of the following types of qualifications do you have?</label>
+                                            <select class="form-select form-control" name="qualification_type" aria-label="Qualification option">
+                                                <option value="">Please make a selection</option>
+                                                <option value="High School Diploma">High School Diploma</option>
+                                                <option value="National Certificate 1">National Certificate 1</option>
+                                                <option value="National Certificate 2">National Certificate 2</option>
+                                                <option value="National Certificate 3">National Certificate 3</option>
+                                                <option value="National Certificate 4">National Certificate 4</option>
+                                                <option value="Diploma">Diploma</option>
+                                                <option value="Bachelor Degree">Bachelor Degree</option>
+                                                <option value="Post Graduate Diploma">Post Graduate Diploma</option>
+                                                <option value="Master Degree">Master Degree</option>
+                                                <option value="Doctoral Degree">Doctoral Degree</option>
+                                                <option value="Not listed">I have a qualification that is not listed here</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label class="form-label-modern mb-2">Do you have a Bachelor Degree?</label>
+                                            <div class="d-flex gap-3 flex-wrap">
+                                                <label class="form-check"><input class="form-check-input me-2" type="radio" name="has_bachelor_degree" value="Yes"> <span>Yes</span></label>
+                                                <label class="form-check"><input class="form-check-input me-2" type="radio" name="has_bachelor_degree" value="No"> <span>No</span></label>
+                                            </div>
+                                            <div class="text-muted small mt-2">Please make a selection</div>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label class="form-label-modern mb-2">Are you willing to relocate for this role?</label>
+                                            <div class="d-flex gap-3 flex-wrap">
+                                                <label class="form-check"><input class="form-check-input me-2" type="radio" name="willing_to_relocate" value="Yes"> <span>Yes</span></label>
+                                                <label class="form-check"><input class="form-check-input me-2" type="radio" name="willing_to_relocate" value="No"> <span>No</span></label>
+                                            </div>
+                                            <div class="text-muted small mt-2">Please make a selection</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="register-step-actions">
+                                        <button type="button" class="register-step-btn secondary prev-step" data-form="applicant">Back</button>
+                                        <button type="button" class="register-step-btn primary next-step" data-form="applicant">Next</button>
+                                    </div>
+                                </div>
+
+                                <div class="register-form-step" data-step="3">
+                                    <div class="row g-3 mb-3">
+                                        <div class="col-12">
+                                            <label class="form-label-modern">
+                                                <i class="fa-regular fa-address-card text-muted"></i> Preferred Job Title
+                                            </label>
+                                            <div class="input-group-modern">
+                                                <span class="input-group-text"><i class="fa-solid fa-briefcase"></i></span>
+                                                <input type="text" class="form-control" name="preferred_job_title" placeholder="Customer Relations Assistant">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label-modern">
+                                                <i class="fa-solid fa-location-dot text-muted"></i> Current City / Location
+                                            </label>
+                                            <div class="input-group-modern">
+                                                <span class="input-group-text"><i class="fa-solid fa-map-pin"></i></span>
+                                                <input type="text" class="form-control" name="current_location" placeholder="Quezon City">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label-modern">
+                                                <i class="fa-regular fa-file-lines text-muted"></i> Short Profile / Summary
+                                            </label>
+                                            <textarea class="form-control" name="profile_summary" rows="4" placeholder="Briefly describe your experience and strengths..."></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="register-step-actions">
+                                        <button type="button" class="register-step-btn secondary prev-step" data-form="applicant">Back</button>
+                                        <button type="button" class="register-step-btn primary next-step" data-form="applicant">Next</button>
+                                    </div>
+                                </div>
+
+                                <div class="register-form-step" data-step="4">
+                                    <div class="register-summary-box mb-3">
+                                        <div class="mb-2"><strong>Account type:</strong> Jobseeker</div>
+                                        <div class="mb-2"><strong>Name:</strong> {{ applicant_form.first_name.value|default:'Your first name' }} {{ applicant_form.last_name.value|default:'Your last name' }}</div>
+                                        <div class="mb-2"><strong>Email:</strong> {{ applicant_form.email.value|default:'your@email.com' }}</div>
+                                        <div class="mb-2"><strong>Phone:</strong> {{ applicant_form.phone.value|default:'Not provided' }}</div>
+                                        <div class="mb-0"><strong>Status:</strong> Ready to create account</div>
+                                    </div>
+
+                                    <!-- Terms & Privacy note -->
+                                    <div class="form-check mb-4">
+                                        <input class="form-check-input" type="checkbox" id="applicantTermsCheck" required checked>
+                                        <label class="form-check-label text-muted small" for="applicantTermsCheck" style="font-size: 0.8rem;">
+                                            I agree to the <a href="{% url 'terms_conditions' %}" class="text-primary text-decoration-none fw-semibold" target="_blank" rel="noopener">Terms and Conditions</a> and <a href="{% url 'privacy_policy' %}" class="text-primary text-decoration-none fw-semibold" target="_blank" rel="noopener">Privacy Policy</a>.
+                                        </label>
+                                    </div>
+
+                                    <div class="register-step-actions">
+                                        <button type="button" class="register-step-btn secondary prev-step" data-form="applicant">Back</button>
+                                        <button type="submit" class="register-step-btn primary">
+                                            <i class="fa-solid fa-user-plus me-1"></i> Create Jobseeker Account
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- ==========================================
+                             EMPLOYER / RECRUITER REGISTRATION FORM
+                             ========================================== -->
+                        <div class="tab-pane fade {% if active_tab == 'employer' %}show active{% endif %}" id="employer-form-pane" role="tabpanel">
+                            <form method="POST" action="{% url 'register' %}" id="employerRegisterForm" class="employer-single-page">
+                                {% csrf_token %}
+                                <input type="hidden" name="form_type" value="employer">
+
+                                {% if employer_form.non_field_errors %}
+                                    <div class="alert alert-danger py-2 px-3 small rounded-3 mb-3 border-0 bg-danger bg-opacity-10 text-danger fw-semibold">
+                                        {% for err in employer_form.non_field_errors %}
+                                            <div><i class="fa-solid fa-circle-exclamation me-1.5"></i> {{ err }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+
+                                <div class="register-form-step active" data-step="1">
+                                    <div class="row g-3 mb-3">
+                                        <!-- Company Name -->
+                                        <div class="col-12">
+                                            <label class="form-label-modern">
+                                                <i class="fa-solid fa-building text-muted"></i> Company / Organization Name
+                                            </label>
+                                            <div class="input-group-modern {% if employer_form.company_name.errors %}is-invalid{% endif %}">
+                                                <span class="input-group-text"><i class="fa-solid fa-building"></i></span>
+                                                {{ employer_form.company_name }}
+                                            </div>
+                                            {% if employer_form.company_name.errors %}
+                                                <div class="text-danger small mt-1 fw-semibold" style="font-size: 0.75rem;">{{ employer_form.company_name.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Contact First Name -->
+                                        <div class="col-sm-6">
+                                            <label class="form-label-modern">
+                                                <i class="fa-regular fa-user text-muted"></i> Contact First Name
+                                            </label>
+                                            <div class="input-group-modern {% if employer_form.first_name.errors %}is-invalid{% endif %}">
+                                                <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                                                {{ employer_form.first_name }}
+                                            </div>
+                                            {% if employer_form.first_name.errors %}
+                                                <div class="text-danger small mt-1 fw-semibold" style="font-size: 0.75rem;">{{ employer_form.first_name.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Contact Last Name -->
+                                        <div class="col-sm-6">
+                                            <label class="form-label-modern">
+                                                <i class="fa-regular fa-user text-muted"></i> Contact Last Name
+                                            </label>
+                                            <div class="input-group-modern {% if employer_form.last_name.errors %}is-invalid{% endif %}">
+                                                <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                                                {{ employer_form.last_name }}
+                                            </div>
+                                            {% if employer_form.last_name.errors %}
+                                                <div class="text-danger small mt-1 fw-semibold" style="font-size: 0.75rem;">{{ employer_form.last_name.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Business Email -->
+                                        <div class="col-sm-6">
+                                            <label class="form-label-modern">
+                                                <i class="fa-regular fa-envelope text-muted"></i> Business Email Address
+                                            </label>
+                                            <div class="input-group-modern {% if employer_form.email.errors %}is-invalid{% endif %}">
+                                                <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+                                                {{ employer_form.email }}
+                                            </div>
+                                            {% if employer_form.email.errors %}
+                                                <div class="text-danger small mt-1 fw-semibold" style="font-size: 0.75rem;">{{ employer_form.email.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Contact Phone -->
+                                        <div class="col-sm-6">
+                                            <label class="form-label-modern">
+                                                <i class="fa-solid fa-phone text-muted"></i> Contact Phone Number
+                                            </label>
+                                            <div class="input-group-modern">
+                                                <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                                                {{ employer_form.phone }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="register-step-actions employer-hidden-action">
+                                        <span></span>
+                                        <button type="button" class="register-step-btn primary next-step" data-form="employer">Next</button>
+                                    </div>
+                                </div>
+
+                                <div class="register-form-step" data-step="2">
+                                    <div class="row g-3 mb-3">
+                                        <!-- Password -->
+                                        <div class="col-sm-6">
+                                            <label class="form-label-modern">
+                                                <i class="fa-solid fa-lock text-muted"></i> Password
+                                            </label>
+                                            <div class="input-group-modern {% if employer_form.password.errors %}is-invalid{% endif %}">
+                                                <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                                                {{ employer_form.password }}
+                                            </div>
+                                            {% if employer_form.password.errors %}
+                                                <div class="text-danger small mt-1 fw-semibold" style="font-size: 0.75rem;">{{ employer_form.password.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+
+                                        <!-- Confirm Password -->
+                                        <div class="col-sm-6">
+                                            <label class="form-label-modern">
+                                                <i class="fa-solid fa-shield-check text-muted"></i> Confirm Password
+                                            </label>
+                                            <div class="input-group-modern {% if employer_form.confirm_password.errors %}is-invalid{% endif %}">
+                                                <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                                                {{ employer_form.confirm_password }}
+                                            </div>
+                                            {% if employer_form.confirm_password.errors %}
+                                                <div class="text-danger small mt-1 fw-semibold" style="font-size: 0.75rem;">{{ employer_form.confirm_password.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="register-step-actions employer-hidden-action">
+                                        <button type="button" class="register-step-btn secondary prev-step" data-form="employer">Back</button>
+                                        <button type="button" class="register-step-btn primary next-step" data-form="employer">Next</button>
+                                    </div>
+                                </div>
+
+                                <div class="register-form-step" data-step="3">
+                                    <div class="register-summary-box mb-3">
+                                        <div class="mb-2"><strong>Account type:</strong> Employer</div>
+                                        <div class="mb-2"><strong>Company:</strong> {{ employer_form.company_name.value|default:'Your company name' }}</div>
+                                        <div class="mb-2"><strong>Contact:</strong> {{ employer_form.first_name.value|default:'Name' }} {{ employer_form.last_name.value|default:'' }}</div>
+                                        <div class="mb-2"><strong>Email:</strong> {{ employer_form.email.value|default:'your@company.com' }}</div>
+                                        <div class="mb-0"><strong>Status:</strong> Ready to create account</div>
+                                    </div>
+
+                                    <!-- Terms & Privacy note -->
+                                    <div class="form-check mb-4">
+                                        <input class="form-check-input" type="checkbox" id="employerTermsCheck" required checked>
+                                        <label class="form-check-label text-muted small" for="employerTermsCheck" style="font-size: 0.8rem;">
+                                            I certify that I represent this organization and agree to the <a href="{% url 'terms_conditions' %}" class="text-primary text-decoration-none fw-semibold" target="_blank" rel="noopener">Terms and Conditions</a>.
+                                        </label>
+                                    </div>
+
+                                    <div class="register-step-actions employer-submit-action">
+                                        <button type="button" class="register-step-btn secondary prev-step" data-form="employer">Back</button>
+                                        <button type="submit" class="register-step-btn primary">
+                                            <i class="fa-solid fa-building-circle-check me-1"></i> Create Employer Account
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Sign In Footer Link -->
+                    <div class="text-center text-muted small mt-2 mb-3">
+                        Already have an account? 
+                        <a href="{% url 'login' %}" class="fw-bold text-primary text-decoration-none ms-1">
+                            Sign In to Portal <i class="fa-solid fa-arrow-right-long ms-1"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    /**
+     * Smooth Tab Switcher between Jobseeker and Employer
+     */
+
+    /**
+     * Wizard navigation for create-account steps
+     */
+    function initWizardNavigation(formId) {
+        const form = document.getElementById(formId);
+        if (!form) return;
+
+        const steps = Array.from(form.querySelectorAll('.register-form-step'));
+        const stepperSteps = Array.from(document.querySelectorAll('.register-stepper-step'));
+        const nextButtons = form.querySelectorAll('.next-step');
+        const prevButtons = form.querySelectorAll('.prev-step');
+        let activeStep = 1;
+
+        function showStep(stepNumber) {
+            activeStep = stepNumber;
+            steps.forEach(step => {
+                const thisStep = Number(step.dataset.step);
+                step.classList.toggle('active', thisStep === activeStep);
+            });
+
+            stepperSteps.forEach(step => {
+                const thisStep = Number(step.dataset.step);
+                step.classList.toggle('active', thisStep === activeStep);
+            });
+        }
+
+        nextButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                if (activeStep < steps.length) {
+                    showStep(activeStep + 1);
+                }
+            });
+        });
+
+        prevButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                if (activeStep > 1) {
+                    showStep(activeStep - 1);
+                }
+            });
+        });
+    }
+
+    initWizardNavigation('applicantRegisterForm');
+    initWizardNavigation('employerRegisterForm');
+</script>
+{% endblock %}

@@ -1,0 +1,353 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Multibiz - Intelligent AI Talent & Recruitment Platform{% endblock %}
+
+{% block content %}
+<!-- =========================================================================
+     1. HERO SECTION & INTERACTIVE SEARCH
+     ========================================================================= -->
+<section class="hero-mesh-bg text-white py-5 py-lg-6">
+    <div class="container py-4 position-relative" style="z-index: 2;">
+        <div class="row align-items-center g-5">
+            <!-- Left Hero Content -->
+            <div class="col-lg-6 animate-slide-up">
+                <span class="badge bg-primary bg-opacity-25 text-info px-3 py-2 rounded-pill fw-semibold mb-3 border border-info border-opacity-25 shadow-sm">
+                    <i class="fa-solid fa-wand-magic-sparkles me-1 text-warning"></i> AI-Powered Talent & Recruitment Ecosystem
+                </span>
+                
+                <h1 class="display-4 fw-extrabold text-white mb-3" style="letter-spacing: -1px; line-height: 1.15;">
+                    {% if hero_slides.first %}
+                        {{ hero_slides.first.title }}
+                    {% else %}
+                        Accelerate Your Career with Intelligent Talent Solutions
+                    {% endif %}
+                </h1>
+                
+                <p class="lead text-light text-opacity-75 mb-4" style="font-size: 1.1rem; line-height: 1.7;">
+                    {% if hero_slides.first %}
+                        {{ hero_slides.first.subtitle }}
+                    {% else %}
+                        Multibiz bridges world-class technical talent with forward-thinking enterprises through automated resume parsing, predictive match scoring, and verified qualification tracking.
+                    {% endif %}
+                </p>
+
+                <!-- Hero Search Bar -->
+                <form method="GET" action="{% url 'careers' %}" class="bg-white p-2 rounded-pill shadow-lg mb-4 d-flex align-items-center gap-2 text-dark border" style="max-width: 520px;">
+                    <span class="ps-3 text-muted"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" name="q" class="form-control border-0 shadow-none px-2 small" placeholder="Search roles, skills (e.g. Python, React, SQL)..." style="font-size: 0.92rem;">
+                    <button type="submit" class="btn btn-primary-custom rounded-pill px-4 py-2 flex-shrink-0">
+                        Search Jobs
+                    </button>
+                </form>
+
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <a href="{% url 'register' %}?tab=employer" class="btn btn-outline-light rounded-pill px-3 py-2 small fw-semibold">
+                        <i class="fa-solid fa-building me-1 text-info"></i> For Employers: Post a Job
+                    </a>
+                    <a href="{% url 'chatbot_view' %}" class="btn btn-outline-light rounded-pill px-3 py-2 small fw-semibold">
+                        <i class="fa-solid fa-robot me-1 text-warning"></i> Try AI Career Copilot
+                    </a>
+                </div>
+
+                <!-- Stats Highlights Row -->
+                <div class="row g-3 pt-3 border-top border-secondary border-opacity-25">
+                    <div class="col-4">
+                        <div class="hero-stat-card text-center">
+                            <div class="fs-4 fw-extrabold text-info">98.4%</div>
+                            <div class="text-light text-opacity-75 small">Match Precision</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="hero-stat-card text-center">
+                            <div class="fs-4 fw-extrabold text-success">5,000+</div>
+                            <div class="text-light text-opacity-75 small">Verified Talents</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="hero-stat-card text-center">
+                            <div class="fs-4 fw-extrabold text-warning">250+</div>
+                            <div class="text-light text-opacity-75 small">Partner Firms</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Hero Graphic & Floating Showcase Card -->
+            <div class="col-lg-6 text-center position-relative">
+                <div class="position-relative d-inline-block w-100 hero-floating-box" style="max-width: 520px;">
+                    <div class="hero-scanner-card p-2 text-start">
+                        <div class="scanner-laser-line"></div>
+                        <img src="{% static 'images/picture1.webp' %}" alt="Multibiz Platform" class="img-fluid rounded-4 w-100" style="max-height: 420px; object-fit: cover;" onerror="this.src='{% static 'images/b6.png' %}'">
+                    </div>
+                    
+                    <!-- Floating Quick Metric Badge -->
+                    <div class="position-absolute bottom-0 start-0 bg-white text-dark p-3 rounded-3 shadow-lg border d-none d-sm-flex align-items-center gap-3 mb-3 ms-3 text-start" style="max-width: 270px; z-index: 5;">
+                        <div class="bg-primary bg-opacity-10 text-primary p-2 rounded-circle fs-4 flex-shrink-0">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold small text-dark">AI Resume Screening</div>
+                            <div class="text-muted" style="font-size: 0.75rem;">Instant qualification analysis</div>
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill mt-1" style="font-size: 0.65rem;">
+                                Active Algorithm
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     2. TRUSTED BRAND NETWORK CAROUSEL
+     ========================================================================= -->
+<section class="py-4 border-bottom" style="background-color: var(--surface-bg);">
+    <div class="container text-center">
+        <p class="text-muted small text-uppercase fw-bold letter-spacing-1 mb-3">Trusted by leading technology companies and growing enterprises</p>
+        <div class="row row-cols-2 row-cols-md-5 g-4 align-items-center justify-content-center opacity-75">
+            {% for brand in brands %}
+                <div class="col text-center">
+                    <span class="fw-bold text-secondary fs-6"><i class="fa-solid fa-building-columns me-1 text-primary"></i> {{ brand.brand_name }}</span>
+                </div>
+            {% empty %}
+                <div class="col"><span class="fw-bold text-secondary">Apex Global</span></div>
+                <div class="col"><span class="fw-bold text-secondary">Vanguard Partners</span></div>
+                <div class="col"><span class="fw-bold text-secondary">NextGen Media</span></div>
+                <div class="col"><span class="fw-bold text-secondary">Pinnacle Corp</span></div>
+                <div class="col"><span class="fw-bold text-secondary">Multibiz Corp</span></div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     3. CORE CAPABILITIES / PLATFORM PILLARS
+     ========================================================================= -->
+<section class="py-5 py-lg-6" style="background-color: var(--surface-bg);">
+    <div class="container">
+        <div class="text-center max-w-700 mx-auto mb-5">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold mb-2">Platform Capabilities</span>
+            <h2 class="fw-bold fs-1 text-dark">Why Industry Leaders Choose Multibiz</h2>
+            <p class="text-secondary lead fs-6">Complete end-to-end recruitment infrastructure for both talent seekers and hiring organizations.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="pillar-card-modern pillar-blue shadow-sm">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-3 p-3 d-inline-block mb-3 fs-3">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2 text-dark">Automated Resume Parsing</h5>
+                    <p class="text-muted small mb-0" style="line-height: 1.7;">
+                        Upload your PDF or Word resume and our NLP parser automatically extracts technical skills, education history, and experience years within seconds.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="pillar-card-modern pillar-green shadow-sm">
+                    <div class="bg-success bg-opacity-10 text-success rounded-3 p-3 d-inline-block mb-3 fs-3">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2 text-dark">Predictive Match Scoring</h5>
+                    <p class="text-muted small mb-0" style="line-height: 1.7;">
+                        Our machine learning scoring compares candidate profile attributes against job specifications, calculating real-time employability and match percentages.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="pillar-card-modern pillar-amber shadow-sm">
+                    <div class="bg-warning bg-opacity-10 text-warning rounded-3 p-3 d-inline-block mb-3 fs-3">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2 text-dark">AI Career Guide Copilot</h5>
+                    <p class="text-muted small mb-0" style="line-height: 1.7;">
+                        Interactive qualification questionnaire guides candidates towards matching job roles, tailored learning paths, and employability enhancements.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     4. FEATURED JOBS BOARD
+     ========================================================================= -->
+<section class="py-5 py-lg-6" style="background-color: var(--surface-bg);">
+    <div class="container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 gap-3">
+            <div>
+                <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fw-bold mb-2">Live Opportunities</span>
+                <h2 class="fw-bold fs-1 text-dark mb-1">Featured Job Openings</h2>
+                <p class="text-secondary mb-0">Discover exciting roles matched to your professional qualifications.</p>
+            </div>
+            <a href="{% url 'careers' %}" class="btn btn-outline-custom">
+                View All Openings <i class="fa-solid fa-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row g-4">
+            {% for job in featured_jobs %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="job-card-pro">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="company-avatar-box">
+                                        {{ job.company_name|slice:":1"|upper }}
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark text-truncate" style="max-width: 140px;">{{ job.company_name }}</div>
+                                        <div class="text-muted small"><i class="fa-solid fa-location-dot me-1"></i>{{ job.location|truncatechars:18 }}</div>
+                                    </div>
+                                </div>
+                                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-pill small">{{ job.get_employment_type_display }}</span>
+                            </div>
+
+                            <h5 class="fw-bold mb-2">
+                                <a href="{% url 'job_detail_public' job.pk %}" class="text-dark text-decoration-none hover-primary">{{ job.title }}</a>
+                            </h5>
+                            <p class="text-muted small mb-3" style="line-height: 1.6;">{{ job.description|truncatewords:18 }}</p>
+                            
+                            <!-- Skills Tags -->
+                            <div class="d-flex flex-wrap gap-1 mb-3">
+                                {% for s in job.get_skills_list|slice:":3" %}
+                                    <span class="skill-chip small py-0 px-2" style="font-size: 0.75rem;">{{ s }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="border-top pt-3 d-flex justify-content-between align-items-center">
+                            <div class="fw-bold text-success small">{{ job.salary_range|default:"Negotiable" }}</div>
+                            <a href="{% url 'job_detail_public' job.pk %}" class="btn btn-sm btn-primary-custom px-3">
+                                View & Apply
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12 text-center py-5 text-muted">
+                    <i class="fa-solid fa-briefcase fs-1 text-secondary opacity-50 mb-3"></i>
+                    <h5>No active job openings at the moment.</h5>
+                    <p class="small">Check back shortly or submit an inquiry.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     5. TESTIMONIALS SECTION
+     ========================================================================= -->
+<section class="py-5 py-lg-6" style="background-color: var(--surface-bg);">
+    <div class="container">
+        <div class="text-center max-w-700 mx-auto mb-5">
+            <span class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill fw-bold mb-2">Testimonials</span>
+            <h2 class="fw-bold fs-1 text-dark">Loved by Talents & Hiring Managers</h2>
+        </div>
+
+        <div class="row g-4">
+            {% for testimonial in testimonials %}
+                <div class="col-md-6">
+                    <div class="custom-card p-4 h-100 bg-white border-0 shadow-sm rounded-4">
+                        <div class="d-flex text-warning mb-3">
+                            {% for i in "12345"|make_list %}
+                                <i class="fa-solid fa-star"></i>
+                            {% endfor %}
+                        </div>
+                        <p class="text-secondary mb-4 fs-6 fst-italic" style="line-height: 1.7;">"{{ testimonial.content }}"</p>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="company-avatar-box">
+                                {{ testimonial.author_name|slice:":1"|upper }}
+                            </div>
+                            <div>
+                                <div class="fw-bold text-dark">{{ testimonial.author_name }}</div>
+                                <div class="text-muted small">{{ testimonial.author_role }} &bull; {{ testimonial.company }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-md-6">
+                    <div class="custom-card p-4 h-100 bg-white border-0 shadow-sm rounded-4">
+                        <div class="d-flex text-warning mb-3"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <p class="text-secondary mb-4 fs-6 fst-italic">"Multibiz transformed how we shortlist and recruit engineering talent. The AI scores provide unprecedented accuracy."</p>
+                        <div class="fw-bold text-dark">David Harrison</div>
+                        <div class="text-muted small">VP of Engineering &bull; Apex Global</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     6. DIRECT INQUIRY & CONTACT FORM
+     ========================================================================= -->
+<section class="py-5 py-lg-6 border-top" style="background-color: var(--surface-bg);">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5">
+                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold mb-2">Get in Touch</span>
+                <h2 class="fw-bold fs-1 text-dark mb-3">Let's Discuss How Multibiz Can Empower You</h2>
+                <p class="text-secondary mb-4" style="line-height: 1.7;">
+                    Have questions regarding corporate hiring solutions, custom talent pipelines, or qualification mapping? Our team is ready to assist you.
+                </p>
+
+                <div class="d-flex flex-column gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-light p-3 rounded-circle text-primary fs-5 border"><i class="fa-solid fa-envelope"></i></div>
+                        <div>
+                            <div class="text-muted small">Email Inquiries</div>
+                            <div class="fw-bold text-dark">contact@multibiz.com.ph</div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-light p-3 rounded-circle text-primary fs-5 border"><i class="fa-solid fa-phone"></i></div>
+                        <div>
+                            <div class="text-muted small">Direct Line</div>
+                            <div class="fw-bold text-dark">+63 (02) 8888-249</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="custom-card p-4 p-lg-5 bg-white border-0 shadow-md rounded-4">
+                    <h4 class="fw-bold mb-4 text-dark">Send Us a Direct Message</h4>
+                    <form method="POST" action="{% url 'home' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="contact_submit" value="1">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small">Full Name</label>
+                                <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small">Email Address</label>
+                                <input type="email" name="email" class="form-control" placeholder="your.email@example.com" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold small">Subject</label>
+                                <input type="text" name="subject" class="form-control" placeholder="Corporate Inquiry / Talent Sourcing">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold small">Message</label>
+                                <textarea name="message" rows="4" class="form-control" placeholder="Write your inquiry or requirements here..." required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary-custom w-100 py-3 fs-6 shadow">
+                                    <i class="fa-solid fa-paper-plane me-2"></i> Submit Inquiry
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,17 @@
+Welcome to Multibiz, {{ user.first_name }}!
+
+It's great to have you on board. We're here to guide you through every step of your search for the right job — and beyond.
+
+From resume tips to interview guides, AI skill matching to our career search tools, we've got all the advice and resources you need.
+
+Getting Started Checklist:
+1. Complete your candidate profile: {{ site_url }}applicant/profile/
+2. Upload and audit your resume with AI parsing
+3. Take the AI Career Assessment: {{ site_url }}chatbot/
+4. Apply directly to verified employer positions: {{ site_url }}jobs/careers/
+
+Need assistance? Contact our career team at support@multibiz.com.
+
+Best regards,
+The Multibiz Intelligence Team
+{{ site_url }}

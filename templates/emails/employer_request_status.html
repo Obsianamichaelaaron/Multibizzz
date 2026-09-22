@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hiring Request Update: {{ employer_request.title }}</title>
+    <style>
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        body { margin: 0; padding: 0; width: 100% !important; background-color: #f1f5f9; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif; color: #1e293b; }
+        .email-wrapper { width: 100%; background-color: #f1f5f9; padding: 30px 10px; }
+        .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08); border: 1px solid #e2e8f0; }
+        .hero-banner {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            padding: 35px 30px;
+            text-align: center;
+            color: #ffffff;
+        }
+        .brand-logo-text { font-size: 26px; font-weight: 800; color: #ffffff; margin-bottom: 8px; }
+        .hero-badge { display: inline-block; background: rgba(59, 130, 246, 0.3); border: 1px solid rgba(59, 130, 246, 0.5); color: #93c5fd; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+        .content-body { padding: 35px 30px; }
+        .info-card { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin: 20px 0; }
+        .info-label { color: #64748b; font-weight: 600; font-size: 14px; }
+        .info-value { color: #0f172a; font-weight: 700; font-size: 14px; }
+        .action-btn { display: inline-block; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: #ffffff !important; text-decoration: none; font-weight: 700; font-size: 15px; padding: 12px 28px; border-radius: 10px; margin-top: 15px; text-align: center; }
+        .footer { background-color: #0f172a; padding: 25px 30px; text-align: center; color: #94a3b8; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <div class="email-container">
+            <div class="hero-banner">
+                <div class="brand-logo-text">Multibiz Talent Solutions</div>
+                <div class="hero-badge">Talent Request Update</div>
+            </div>
+
+            <div class="content-body">
+                <h2 style="color: #0f172a; font-size: 20px; margin-top: 0;">Hello, {{ employer_name }}!</h2>
+                <p style="color: #334155; font-size: 15px; line-height: 1.6;">
+                    The status of your hiring request has been updated by the Admin team:
+                </p>
+
+                <div class="info-card">
+                    <table width="100%" cellpadding="6" cellspacing="0">
+                        <tr>
+                            <td class="info-label">Request ID:</td>
+                            <td class="info-value" align="right">#{{ employer_request.id }}</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">Position / Role:</td>
+                            <td class="info-value" align="right">{{ employer_request.title }}</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">New Status:</td>
+                            <td class="info-value" align="right" style="color: #2563eb;">{{ employer_request.get_status_display }}</td>
+                        </tr>
+                        {% if employer_request.admin_notes %}
+                        <tr>
+                            <td class="info-label">Admin Remarks:</td>
+                            <td class="info-value" align="right">{{ employer_request.admin_notes }}</td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                </div>
+
+                <div style="text-align: center; margin: 25px 0;">
+                    <a href="{{ site_url }}jobs/employer/talent-requests/{{ employer_request.id }}/" class="action-btn">
+                        View Request Details &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer">
+                &copy; Multibiz Recruitment & Talent Intelligence Platform.<br>
+                This is an automated notification. Please do not reply directly to this email.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

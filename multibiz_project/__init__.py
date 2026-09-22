@@ -1,0 +1,1 @@
+"""Multibiz Django Project."""

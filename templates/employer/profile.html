@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Company Profile - Multibiz{% endblock %}
+
+{% block extra_css %}
+<style>
+    .section-title-badge {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: var(--mb-primary-subtle);
+        color: var(--mb-primary);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.95rem;
+    }
+    .input-icon-group {
+        position: relative;
+    }
+    .input-icon-group .input-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 0.95rem;
+        pointer-events: none;
+        z-index: 4;
+    }
+    .input-icon-group .form-control,
+    .input-icon-group .form-select {
+        padding-left: 2.6rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Top Hero Header Banner (Dark Enterprise Palette) -->
+    <div class="employer-hero-banner">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 position-relative" style="z-index: 1;">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1 small text-white-50">
+                        <li class="breadcrumb-item"><a href="{% url 'employer_dashboard' %}" class="text-white-50 text-decoration-none">Dashboard</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">Company Profile</li>
+                    </ol>
+                </nav>
+                <div class="d-flex align-items-center gap-2 mt-1">
+                    <h3 class="fw-extrabold text-white mb-0">
+                        <i class="fa-solid fa-building-user text-info me-2"></i>Company Profile
+                    </h3>
+                    <span class="badge bg-primary bg-opacity-25 text-white border border-primary border-opacity-50 rounded-pill px-2.5 py-1 small fw-semibold">
+                        <i class="fa-solid fa-shield-check me-1 text-success"></i> Corporate Identity
+                    </span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <a href="{% url 'employer_candidates' %}" class="btn btn-outline-light btn-sm px-3 py-2 shadow-sm">
+                    <i class="fa-solid fa-users me-1"></i> Candidates
+                </a>
+                <a href="{% url 'employer_post_job' %}" class="btn btn-primary-custom btn-sm px-3 py-2 shadow-sm">
+                    <i class="fa-solid fa-plus me-1"></i> Post Vacancy
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main 2-Column Grid -->
+    <div class="row g-4">
+        
+        <!-- Left Column: Company Brand Overview (4 Cols) -->
+        <div class="col-lg-4 col-xl-4">
+            <div class="d-flex flex-column gap-4">
+                
+                <!-- Company Card -->
+                <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4 text-center">
+                    <div class="mb-3 position-relative d-inline-block">
+                        {% if profile.company_logo %}
+                            <img src="{{ profile.company_logo.url }}" id="logoPreviewImg" class="rounded-4 border p-2 shadow-sm" style="width: 90px; height: 90px; object-fit: contain; background: #ffffff;" alt="{{ profile.display_name }}">
+                        {% else %}
+                            <div class="company-avatar-box fs-1 rounded-4 shadow-sm" id="logoPreviewFallback" style="width: 90px; height: 90px; margin: 0 auto;">
+                                {{ profile.display_name|slice:":1"|upper }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <h5 class="fw-bold text-dark mb-1">{{ profile.display_name }}</h5>
+                    <div class="text-muted small mb-2"><i class="fa-solid fa-industry me-1 text-primary"></i>{{ profile.industry|default:"Enterprise Solutions" }}</div>
+                    
+                    <div class="d-inline-flex align-items-center gap-2 bg-light px-3 py-1 rounded-pill border small mb-4">
+                        <i class="fa-solid fa-badge-check text-success"></i>
+                        <span class="text-secondary fw-semibold">Verified Corporate Employer</span>
+                    </div>
+
+                    <div class="p-3 bg-light rounded-3 border text-start mb-3">
+                        <div class="text-muted small fw-semibold mb-2">Corporate Information:</div>
+                        <div class="d-flex flex-column gap-2 small text-secondary">
+                            <div><i class="fa-solid fa-users me-2 text-primary"></i> Size: <strong>{{ profile.company_size|default:"50-200 employees" }}</strong></div>
+                            {% if profile.company_website %}
+                                <div><i class="fa-solid fa-globe me-2 text-primary"></i> <a href="{{ profile.company_website }}" target="_blank" class="text-primary text-decoration-none">{{ profile.company_website }}</a></div>
+                            {% endif %}
+                            {% if profile.company_address %}
+                                <div><i class="fa-solid fa-location-dot me-2 text-danger"></i> {{ profile.company_address|truncatewords:8 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-primary bg-opacity-10 rounded-3 text-start small text-primary">
+                        <i class="fa-solid fa-shield-halved me-1"></i> Your company profile and branding are showcased to jobseekers across active openings and candidate recommendations.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Right Column: Settings Form (8 Cols) -->
+        <div class="col-lg-8 col-xl-8">
+            <form method="POST" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+
+                <!-- SECTION 1: Recruiter & Account Contact -->
+                <div class="custom-card p-4 p-lg-5 bg-white border-0 shadow-sm rounded-4 mb-4">
+                    <div class="d-flex align-items-center gap-3 border-bottom pb-3 mb-4">
+                        <div class="section-title-badge">1</div>
+                        <div>
+                            <h5 class="fw-bold text-dark mb-0">Primary Recruiter Contact</h5>
+                            <p class="text-secondary small mb-0">Contact point for interview notifications and billing receipts.</p>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small text-dark">First Name <span class="text-danger">*</span></label>
+                            <div class="input-icon-group">
+                                <i class="fa-regular fa-user input-icon"></i>
+                                {{ form.first_name }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small text-dark">Last Name <span class="text-danger">*</span></label>
+                            <div class="input-icon-group">
+                                <i class="fa-regular fa-user input-icon"></i>
+                                {{ form.last_name }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small text-dark">Business Email Address</label>
+                            <div class="input-icon-group">
+                                <i class="fa-regular fa-envelope input-icon"></i>
+                                <input type="email" class="form-control bg-light" value="{{ user.email }}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small text-dark">Contact Phone Number</label>
+                            <div class="input-icon-group">
+                                <i class="fa-solid fa-phone input-icon"></i>
+                                {{ form.phone }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: Organization Brand & Presence -->
+                <div class="custom-card p-4 p-lg-5 bg-white border-0 shadow-sm rounded-4 mb-4">
+                    <div class="d-flex align-items-center gap-3 border-bottom pb-3 mb-4">
+                        <div class="section-title-badge">2</div>
+                        <div>
+                            <h5 class="fw-bold text-dark mb-0">Company Brand</h5>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label fw-semibold small text-dark">Company / Organization Legal Name <span class="text-danger">*</span></label>
+                            <div class="input-icon-group">
+                                <i class="fa-solid fa-building input-icon"></i>
+                                {{ form.company_name }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small text-dark">Industry Sector</label>
+                            <div class="input-icon-group">
+                                <i class="fa-solid fa-layer-group input-icon"></i>
+                                {{ form.industry }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small text-dark">Company Size</label>
+                            <div class="input-icon-group">
+                                <i class="fa-solid fa-users input-icon"></i>
+                                {{ form.company_size }}
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-semibold small text-dark">Official Website</label>
+                            <div class="input-icon-group">
+                                <i class="fa-solid fa-globe input-icon"></i>
+                                {{ form.company_website }}
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-semibold small text-dark">Headquarters / Office Address</label>
+                            <div class="input-icon-group">
+                                <i class="fa-solid fa-location-dot input-icon" style="top: 24px;"></i>
+                                {{ form.company_address }}
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-semibold small text-dark">Company Logo</label>
+                            {{ form.company_logo }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Footer -->
+                <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4 d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
+                    <a href="{% url 'employer_dashboard' %}" class="btn btn-outline-secondary px-4 py-2">
+                        <i class="fa-solid fa-xmark me-1"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary-custom px-5 py-2 fs-6 shadow">
+                        <i class="fa-solid fa-floppy-disk me-1"></i> Save Company Profile
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const logoInput = document.getElementById('id_company_logo');
+    const logoImg = document.getElementById('logoPreviewImg');
+    const logoFallback = document.getElementById('logoPreviewFallback');
+
+    if (logoInput) {
+        logoInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (logoImg) {
+                        logoImg.src = e.target.result;
+                    } else if (logoFallback) {
+                        const newImg = document.createElement('img');
+                        newImg.src = e.target.result;
+                        newImg.className = 'rounded-4 border p-1 shadow-sm';
+                        newImg.id = 'logoPreviewImg';
+                        newImg.style.width = '90px';
+                        newImg.style.height = '90px';
+                        newImg.style.objectFit = 'contain';
+                        newImg.style.background = '#ffffff';
+                        logoFallback.parentNode.replaceChild(newImg, logoFallback);
+                    }
+                };
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    }
+</script>
+{% endblock %}

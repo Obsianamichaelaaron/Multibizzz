@@ -1,0 +1,235 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-custom sticky-top {% if user.is_authenticated and user.is_employer %}navbar-employer{% elif user.is_authenticated and user.is_admin_user %}navbar-admin{% endif %}">
+    <div class="container">
+        <!-- Brand Logo -->
+        <a class="navbar-brand d-flex align-items-center me-3" href="{% if user.is_authenticated and user.is_employer %}{% url 'employer_dashboard' %}{% elif user.is_authenticated and user.is_admin_user %}{% url 'admin_dashboard' %}{% else %}{% url 'home' %}{% endif %}">
+            <img src="{% static 'images/mbLogo.png' %}" alt="Multibiz" class="navbar-brand-logo" onerror="this.style.display='none';">
+            <span class="navbar-brand-text ms-2">Multibiz</span>
+        </a>
+
+        <!-- Mobile Toggle Button -->
+        <button class="navbar-toggler border-0 shadow-none px-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa-solid fa-bars-staggered fs-5 text-primary"></i>
+        </button>
+
+        <!-- Navbar Links Container -->
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center gap-1 {% if user.is_authenticated and user.is_employer %}employer-nav-links{% elif user.is_authenticated and user.is_admin_user %}admin-nav-links{% endif %}">
+                {% if user.is_authenticated and user.is_employer %}
+                    <!-- ==============================================
+                         1. EMPLOYER / RECRUITER WORKSPACE
+                         (Matches landing page & applicant simplicity)
+                         ============================================== -->
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'employer_dashboard' %}active{% endif %}" href="{% url 'employer_dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'employer_talent_requests' or request.resolver_match.url_name == 'employer_request_talent' or request.resolver_match.url_name == 'employer_talent_request_detail' %}active{% endif %}" href="{% url 'employer_talent_requests' %}">Talent Requests</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'recommended_candidates' %}active{% endif %}" href="{% url 'recommended_candidates' %}">Talent Radar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'employer_candidates' or request.resolver_match.url_name == 'employer_candidate_detail' %}active{% endif %}" href="{% url 'employer_candidates' %}">Candidates</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'employer_jobs' %}active{% endif %}" href="{% url 'employer_jobs' %}">Openings</a>
+                    </li>
+
+                {% elif user.is_authenticated and user.is_applicant %}
+                    <!-- ==============================================
+                         2. APPLICANT / CANDIDATE WORKSPACE
+                         ============================================== -->
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'services' %}active{% endif %}" href="{% url 'services' %}">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'solutions' %}active{% endif %}" href="{% url 'solutions' %}">Solutions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'careers' or request.resolver_match.url_name == 'job_detail_public' or request.resolver_match.url_name == 'applicant_jobs' or request.resolver_match.url_name == 'apply_job' %}active{% endif %}" href="{% url 'careers' %}">Careers</a>
+                    </li>
+
+                {% elif user.is_authenticated and user.is_admin_user %}
+                    <!-- ==============================================
+                         3. ADMINISTRATOR NAVBAR
+                         ============================================== -->
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}" href="{% url 'admin_dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'admin_employer_requests' or request.resolver_match.url_name == 'admin_employer_request_detail' or request.resolver_match.url_name == 'admin_create_job_from_request' %}active{% endif %}" href="{% url 'admin_employer_requests' %}">Employer Requests</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'admin_jobs' or request.resolver_match.url_name == 'admin_job_candidates' or request.resolver_match.url_name == 'admin_create_job' or request.resolver_match.url_name == 'admin_edit_job' %}active{% endif %}" href="{% url 'admin_jobs' %}">Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'admin_users' %}active{% endif %}" href="{% url 'admin_users' %}">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'admin_cms' %}active{% endif %}" href="{% url 'admin_cms' %}">CMS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'admin_audit_trail' %}active{% endif %}" href="{% url 'admin_audit_trail' %}">Audit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'admin_inquiries' %}active{% endif %}" href="{% url 'admin_inquiries' %}">Inquiries</a>
+                    </li>
+
+                {% else %}
+                    <!-- ==============================================
+                         4. PUBLIC / GUEST NAVBAR
+                         ============================================== -->
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'services' %}active{% endif %}" href="{% url 'services' %}">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'solutions' %}active{% endif %}" href="{% url 'solutions' %}">Solutions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'careers' or request.resolver_match.url_name == 'job_detail_public' %}active{% endif %}" href="{% url 'careers' %}">Careers</a>
+                    </li>
+                {% endif %}
+            </ul>
+
+            <!-- Right Controls -->
+            <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0 {% if user.is_authenticated and user.is_employer %}employer-nav-actions{% elif user.is_authenticated and user.is_admin_user %}admin-nav-actions{% endif %}">
+                {% if user.is_authenticated %}
+                    <!-- Direct Messages Quick Icon -->
+                    <a href="{% url 'chat_center' %}" class="btn btn-light position-relative rounded-circle p-0 d-flex align-items-center justify-content-center border shadow-xs ui-avatar-sm" title="Direct Messages">
+                        <i class="fa-regular fa-comment-dots text-secondary" style="font-size: 0.85rem;"></i>
+                        {% if unread_messages_count > 0 %}
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" style="font-size: 0.6rem; padding: 0.15rem 0.35rem;">
+                                {{ unread_messages_count }}
+                            </span>
+                        {% endif %}
+                    </a>
+
+                    <!-- Notifications Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-light position-relative rounded-circle p-0 d-flex align-items-center justify-content-center border shadow-xs ui-avatar-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications">
+                            <i class="fa-regular fa-bell text-secondary" style="font-size: 0.85rem;"></i>
+                            {% if unread_notifications_count > 0 %}
+                                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="width: 7px; height: 7px;"></span>
+                            {% endif %}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-md border-0 p-2 mt-2 rounded-3 navbar-notifications-menu">
+                            <li class="d-flex justify-content-between align-items-center px-2 py-1 border-bottom mb-2">
+                                <span class="fw-bold small">Notifications</span>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge bg-primary rounded-pill" id="notificationUnreadBadge">{{ unread_notifications_count }} unread</span>
+                                    {% if unread_notifications_count > 0 %}
+                                        <button type="button" class="btn btn-link btn-sm p-0 text-primary text-decoration-none" id="markAllNotificationsRead" data-url="{% url 'mark_notifications_read_ajax' %}">
+                                            Mark all read
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </li>
+                            {% for notif in recent_notifications %}
+                                <li>
+                                    <div class="dropdown-item p-2 rounded-2 {% if not notif.is_read %}bg-light{% endif %}">
+                                        <div class="fw-semibold small text-truncate">{{ notif.title }}</div>
+                                        <div class="text-muted small text-truncate">{{ notif.message }}</div>
+                                        <div class="text-muted" style="font-size: 0.7rem;">{{ notif.created_at|timesince }} ago</div>
+                                    </div>
+                                </li>
+                            {% empty %}
+                                <li class="text-center py-3 text-muted small">No notifications</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <script>
+                    (function() {
+                        const markAllButton = document.getElementById('markAllNotificationsRead');
+                        if (!markAllButton) return;
+
+                        function getCookie(name) {
+                            const cookies = document.cookie ? document.cookie.split(';') : [];
+                            for (const cookie of cookies) {
+                                const value = cookie.trim();
+                                if (value.startsWith(name + '=')) return decodeURIComponent(value.slice(name.length + 1));
+                            }
+                            return '';
+                        }
+
+                        markAllButton.addEventListener('click', function() {
+                            markAllButton.disabled = true;
+                            fetch(markAllButton.dataset.url, {
+                                method: 'POST',
+                                headers: {'X-CSRFToken': getCookie('csrftoken')}
+                            }).then(function(response) {
+                                if (!response.ok) throw new Error('Unable to mark notifications as read.');
+                                document.querySelectorAll('.navbar-notifications-menu .bg-light').forEach(function(item) {
+                                    item.classList.remove('bg-light');
+                                });
+                                const badge = document.getElementById('notificationUnreadBadge');
+                                if (badge) badge.textContent = '0 unread';
+                                markAllButton.remove();
+                                const indicator = document.querySelector('[title="Notifications"] .bg-danger');
+                                if (indicator) indicator.remove();
+                            }).catch(function(error) {
+                                console.error(error);
+                                markAllButton.disabled = false;
+                            });
+                        });
+                    })();
+                    </script>
+
+                    <!-- User Profile Dropdown Button -->
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle d-flex align-items-center gap-1.5 rounded-pill px-2.5 py-0.5 border shadow-xs navbar-profile-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-circle-user text-primary" style="font-size: 0.95rem;"></i>
+                            <span class="fw-semibold text-truncate d-none d-sm-inline-block navbar-profile-name">{{ user.full_name|default:user.username }}</span>
+                            <span class="badge {% if user.is_admin_user %}bg-danger{% elif user.is_employer %}bg-primary{% else %}bg-success{% endif %} rounded-pill text-capitalize" style="font-size: 0.65rem; padding: 0.15rem 0.4rem;">{{ user.role }}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-md border-0 p-2 mt-2 rounded-3 navbar-profile-menu">
+                            <li class="px-3 py-2 border-bottom mb-1">
+                                <div class="fw-bold small text-dark">{{ user.full_name }}</div>
+                                <div class="text-muted small text-truncate">{{ user.email }}</div>
+                            </li>
+                            {% if user.is_applicant %}
+                                <li><a class="dropdown-item rounded-2 py-2" href="{% url 'applicant_dashboard' %}"><i class="fa-solid fa-gauge-high me-2 text-primary"></i>Profile Dashboard</a></li>
+                                <li><a class="dropdown-item rounded-2 py-2" href="{% url 'applicant_profile' %}"><i class="fa-solid fa-user-pen me-2 text-info"></i>Edit Profile & AI Resume</a></li>
+                                <li><a class="dropdown-item rounded-2 py-2" href="{% url 'my_applications' %}"><i class="fa-solid fa-file-signature me-2 text-success"></i>My Applications</a></li>
+                            {% elif user.is_employer %}
+                                <li><a class="dropdown-item rounded-2 py-2" href="{% url 'employer_dashboard' %}"><i class="fa-solid fa-gauge me-2 text-primary"></i>Employer Dashboard</a></li>
+                                <li><a class="dropdown-item rounded-2 py-2" href="{% url 'employer_candidates' %}"><i class="fa-solid fa-users me-2 text-info"></i>Candidate Pipeline</a></li>
+                                <li><a class="dropdown-item rounded-2 py-2" href="{% url 'recommended_candidates' %}"><i class="fa-solid fa-wand-magic-sparkles me-2 text-warning"></i>AI Talent Radar</a></li>
+                                <li><a class="dropdown-item rounded-2 py-2" href="{% url 'employer_jobs' %}"><i class="fa-solid fa-briefcase me-2 text-secondary"></i>Manage Jobs</a></li>
+                                <li><a class="dropdown-item rounded-2 py-2" href="{% url 'employer_post_job' %}"><i class="fa-solid fa-plus-circle me-2 text-success"></i>Post New Job</a></li>
+                                <li><a class="dropdown-item rounded-2 py-2" href="{% url 'employer_profile' %}"><i class="fa-solid fa-building me-2 text-info"></i>Company Profile</a></li>
+                            {% elif user.is_admin_user %}
+                                <li><a class="dropdown-item rounded-2 py-2" href="{% url 'admin_dashboard' %}"><i class="fa-solid fa-shield me-2 text-danger"></i>Admin Dashboard</a></li>
+                                <li><a class="dropdown-item rounded-2 py-2" href="{% url 'admin_audit_trail' %}"><i class="fa-solid fa-clipboard-list me-2 text-secondary"></i>Audit Trail</a></li>
+                            {% endif %}
+                            <li><a class="dropdown-item rounded-2 py-2" href="{% url 'chat_center' %}"><i class="fa-solid fa-comments me-2 text-success"></i>Direct Messages</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item rounded-2 py-2 text-danger" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket me-2"></i>Sign Out</a></li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-custom btn-sm px-3 ui-action-button">
+                        Sign In
+                    </a>
+                    <a href="{% url 'register' %}" class="btn btn-primary-custom btn-sm px-3 shadow-sm ui-action-button">
+                        Get Started
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+

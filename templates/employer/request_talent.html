@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Request Talent / Hire Candidates - Multibiz{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Breadcrumb & Header -->
+    <div class="employer-hero-banner mb-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 position-relative" style="z-index: 1;">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1 small text-white-50">
+                        <li class="breadcrumb-item"><a href="{% url 'employer_dashboard' %}" class="text-white-50 text-decoration-none">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'employer_talent_requests' %}" class="text-white-50 text-decoration-none">Talent Requests</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">New Request</li>
+                    </ol>
+                </nav>
+                <div class="d-flex align-items-center gap-2 mt-1">
+                    <h3 class="fw-extrabold text-white mb-0">
+                        <i class="fa-solid fa-file-circle-plus text-warning me-2"></i>Request Talent / Candidate Search
+                    </h3>
+                    <span class="badge bg-primary bg-opacity-25 text-white border border-primary border-opacity-50 rounded-pill px-2.5 py-1 small fw-semibold">
+                        <i class="fa-solid fa-headset me-1"></i> Admin Managed
+                    </span>
+                </div>
+            </div>
+            <div>
+                <a href="{% url 'employer_talent_requests' %}" class="btn btn-outline-light btn-sm px-3.5 py-2 shadow-sm d-inline-flex align-items-center gap-1.5" style="border-radius: 10px;">
+                    <i class="fa-solid fa-list-check"></i> View My Requests
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Form Layout -->
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="custom-card p-4 p-md-5 bg-white border-0 shadow-sm rounded-4">
+                <div class="d-flex align-items-center gap-2 mb-4 pb-3 border-bottom">
+                    <div class="company-avatar-box fs-5" style="width: 40px; height: 40px;">
+                        <i class="fa-solid fa-briefcase text-primary"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold text-dark mb-0">Position Specifications and Requirements</h5>
+                    </div>
+                </div>
+
+                <form method="POST" action="{% url 'employer_request_talent' %}">
+                    {% csrf_token %}
+
+                    {% if form.errors %}
+                        <div class="alert alert-danger rounded-3 mb-4">
+                            <strong>Please correct the errors below:</strong>
+                            {{ form.errors }}
+                        </div>
+                    {% endif %}
+
+                    <!-- Position Title & Vacancies -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-8">
+                            <label class="form-label fw-bold small text-dark">Position / Job Title <span class="text-danger">*</span></label>
+                            {{ form.title }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold small text-dark">Candidates Needed <span class="text-danger">*</span></label>
+                            {{ form.vacancies_count }}
+                        </div>
+                    </div>
+
+                    <!-- Employment Type, Location, Salary -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold small text-dark">Employment Type</label>
+                            {{ form.employment_type }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold small text-dark">Location / Shift</label>
+                            {{ form.location }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold small text-dark">Salary Budget / Range</label>
+                            {{ form.salary_range }}
+                        </div>
+                    </div>
+
+                    <!-- Required Skills -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-dark">
+                            <i class="fa-solid fa-code text-primary me-1"></i> Required Technical Skills (Comma-separated) <span class="text-danger">*</span>
+                        </label>
+                        {{ form.skills_required }}
+                    </div>
+
+                    <!-- Experience & Education -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-dark">
+                                <i class="fa-solid fa-calendar text-info me-1"></i> Experience Requirements
+                            </label>
+                            {{ form.experience_required }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-dark">
+                                <i class="fa-solid fa-graduation-cap text-success me-1"></i> Education Level
+                            </label>
+                            {{ form.education_level }}
+                        </div>
+                    </div>
+
+                    <!-- Certifications -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-dark">
+                            <i class="fa-solid fa-certificate text-warning me-1"></i> Preferred / Required Certifications
+                        </label>
+                        {{ form.certifications }}
+                    </div>
+
+                    <!-- Detailed Description -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-dark">
+                            Job Description & Core Responsibilities <span class="text-danger">*</span>
+                        </label>
+                        {{ form.description }}
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <a href="{% url 'employer_talent_requests' %}" class="btn btn-light px-4">Cancel</a>
+                        <button type="submit" class="btn btn-primary-custom px-5 py-2.5 shadow-sm fw-bold">
+                            <i class="fa-solid fa-paper-plane me-1"></i> Submit Talent Request to Admin
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sidebar Process Guide -->
+        <div class="col-lg-4">
+            <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4 mb-4">
+                <h6 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-route text-primary"></i> Recruitment Flow Process
+                </h6>
+                <div class="timeline-stepper">
+                    <div class="d-flex gap-3 mb-3">
+                        <div class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 28px; height: 28px;">1</div>
+                        <div>
+                            <div class="fw-bold small text-dark">Submit Request</div>
+                            <div class="text-muted small" style="font-size: 0.78rem;">You submit candidate specifications to Admin.</div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 mb-3">
+                        <div class="badge bg-secondary rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 28px; height: 28px;">2</div>
+                        <div>
+                            <div class="fw-bold small text-dark">Admin Reviews & Posts</div>
+                            <div class="text-muted small" style="font-size: 0.78rem;">Admin validates requirements and publishes the opening.</div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 mb-3">
+                        <div class="badge bg-secondary rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 28px; height: 28px;">3</div>
+                        <div>
+                            <div class="fw-bold small text-dark">Automated Qualification</div>
+                            <div class="text-muted small" style="font-size: 0.78rem;">Applicants are matched against required skills & experience.</div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3 mb-3">
+                        <div class="badge bg-secondary rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 28px; height: 28px;">4</div>
+                        <div>
+                            <div class="fw-bold small text-dark">Talent Radar Dispatch</div>
+                            <div class="text-muted small" style="font-size: 0.78rem;">Admin ranks and sends top qualified candidates to your portal.</div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <div class="badge bg-success rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 28px; height: 28px;">5</div>
+                        <div>
+                            <div class="fw-bold small text-dark">Employer Selection</div>
+                            <div class="text-muted small" style="font-size: 0.78rem;">Review ranked candidates and make hiring decisions.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="custom-card p-4 bg-light border-0 shadow-xs rounded-4">
+                <h6 class="fw-bold text-dark mb-2">
+                    <i class="fa-solid fa-shield-halved text-success me-1"></i> Quality Guarantee
+                </h6>
+                <p class="text-muted small mb-0" style="font-size: 0.8rem; line-height: 1.5;">
+                    Every candidate submitted to your Talent Radar is pre-screened, verified, and ranked based on factual skills, experience alignment, and verified resume artifacts.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

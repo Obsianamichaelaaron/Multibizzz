@@ -1,0 +1,652 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Employer Talent Requests Management - Multibiz Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-employer-requests-page {
+        --requests-border: #dce5ef;
+        --requests-ink: #17304f;
+    }
+
+    .admin-employer-requests-page .employer-hero-banner {
+        padding: 1.35rem 1.5rem !important;
+        border-radius: 16px !important;
+    }
+
+    .admin-employer-requests-page .employer-hero-banner h3 {
+        font-size: clamp(1.3rem, 2vw, 1.7rem);
+    }
+
+    .admin-employer-requests-page .admin-requests-card {
+        border-color: var(--requests-border);
+        box-shadow: 0 5px 18px rgba(15, 32, 61, 0.055);
+    }
+
+    .admin-employer-requests-page .filter-pills-bar {
+        gap: 0.4rem;
+    }
+
+    .admin-employer-requests-page .filter-pill {
+        min-height: 34px;
+        padding: 0.38rem 0.7rem;
+        font-size: 0.82rem;
+        line-height: 1.2;
+    }
+
+    .admin-employer-requests-page .filter-pill .pill-count {
+        min-width: 21px;
+        min-height: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.74rem;
+    }
+
+    .admin-employer-requests-page .search-input-group {
+        width: 205px;
+    }
+
+    .admin-employer-requests-page .search-input-group .form-control {
+        height: 36px;
+        font-size: 0.84rem;
+        background: #ffffff;
+    }
+
+    .admin-employer-requests-page .admin-requests-table {
+        table-layout: fixed;
+    }
+
+    .admin-employer-requests-page .admin-requests-table th:nth-child(1) {
+        width: 18% !important;
+    }
+
+    .admin-employer-requests-page .admin-requests-table th:nth-child(2) {
+        width: 13% !important;
+    }
+
+    .admin-employer-requests-page .admin-requests-table th:nth-child(3) {
+        width: 15% !important;
+    }
+
+    .admin-employer-requests-page .admin-requests-table th:nth-child(4) {
+        width: 12% !important;
+    }
+
+    .admin-employer-requests-page .admin-requests-table th:nth-child(5),
+    .admin-employer-requests-page .admin-requests-table th:nth-child(6),
+    .admin-employer-requests-page .admin-requests-table th:nth-child(7) {
+        width: 8% !important;
+    }
+
+    .admin-employer-requests-page .admin-requests-table th:nth-child(8) {
+        width: 20% !important;
+    }
+
+    .admin-employer-requests-page .admin-requests-table thead th {
+        padding: 0.82rem 0.65rem;
+        font-size: 0.74rem;
+        color: #38516d;
+        letter-spacing: 0.035em;
+    }
+
+    .admin-employer-requests-page .admin-requests-table th:nth-child(5),
+    .admin-employer-requests-page .admin-requests-table th:nth-child(6),
+    .admin-employer-requests-page .admin-requests-table th:nth-child(7) {
+        padding-left: 0.8rem;
+        padding-right: 0.8rem;
+        font-size: 0.68rem;
+        letter-spacing: 0;
+    }
+
+    .admin-employer-requests-page .admin-requests-table th:nth-child(6),
+    .admin-employer-requests-page .admin-requests-table th:nth-child(7) {
+        border-left: 1px solid #e2e8f0;
+    }
+
+    .admin-employer-requests-page .admin-requests-table tbody td {
+        padding: 0.82rem 0.65rem;
+        font-size: 0.84rem;
+        line-height: 1.35;
+    }
+
+    .admin-employer-requests-page .admin-requests-table tbody tr {
+        min-height: 94px;
+    }
+
+    .admin-employer-requests-page .admin-requests-table td:first-child,
+    .admin-employer-requests-page .admin-requests-table th:first-child {
+        padding-left: 0.75rem;
+    }
+
+    .admin-employer-requests-page .admin-requests-table .req-num-badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 26px;
+        font-size: 0.78rem;
+    }
+
+    .admin-employer-requests-page .admin-requests-table .status-badge {
+        min-height: 30px;
+        justify-content: center;
+        padding: 0.35rem 0.65rem;
+        font-size: 0.78rem;
+    }
+
+    .admin-employer-requests-page .admin-requests-table .metric-badge {
+        min-width: 30px;
+        height: 25px;
+        font-size: 0.8rem;
+    }
+
+    .admin-employer-requests-page .admin-requests-table .actions-cell {
+        white-space: nowrap;
+    }
+
+    .admin-employer-requests-page .admin-requests-table .request-actions {
+        gap: 0.35rem !important;
+        width: 100%;
+        justify-content: flex-start !important;
+    }
+
+    .admin-employer-requests-page .admin-requests-table .request-actions .btn {
+        min-height: 36px;
+        padding: 0.4rem 0.65rem !important;
+        font-size: 0.78rem !important;
+        border-radius: 7px !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .admin-employer-requests-page .request-review-action {
+        width: 68px;
+    }
+
+    .admin-employer-requests-page .request-post-action {
+        width: 72px;
+    }
+
+    .admin-employer-requests-page .request-candidates-action {
+        width: 120px;
+    }
+
+    @media (max-width: 991.98px) {
+        .admin-employer-requests-page .admin-requests-table {
+            min-width: 980px;
+        }
+
+        .admin-employer-requests-page .admin-requests-table .actions-cell {
+            min-width: 175px;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .admin-employer-requests-page.container {
+            padding-top: 1rem !important;
+        }
+
+        .admin-employer-requests-page .employer-hero-banner {
+            padding: 1.15rem !important;
+        }
+
+        .admin-employer-requests-page .search-input-group {
+            width: 100%;
+        }
+
+        .admin-employer-requests-page .admin-requests-card > .d-flex {
+            align-items: stretch !important;
+        }
+
+        .admin-employer-requests-page .admin-requests-card form {
+            width: 100%;
+        }
+    }
+
+    .admin-requests-card {
+        border-radius: 14px;
+        background: #ffffff;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        border: 1px solid #eef2f6;
+    }
+
+    .admin-requests-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .admin-requests-table thead th {
+        background: #f8fafc;
+        color: #475569;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        padding: 0.7rem 0.55rem;
+        white-space: nowrap;
+        border-bottom: 1px solid #e2e8f0;
+        vertical-align: middle;
+    }
+
+    .admin-requests-table tbody td {
+        padding: 0.75rem 0.55rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+        font-size: 0.82rem;
+    }
+
+    .admin-requests-table tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    .filter-pills-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .filter-pill {
+        font-size: 0.76rem;
+        font-weight: 600;
+        padding: 0.28rem 0.62rem;
+        border-radius: 50px;
+        transition: all 0.15s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        white-space: nowrap;
+        border: 1px solid transparent;
+    }
+
+    .filter-pill.active {
+        background: #2563eb;
+        color: #ffffff !important;
+        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+    }
+
+    .filter-pill.inactive {
+        background: #f1f5f9;
+        color: #475569;
+        border-color: #e2e8f0;
+    }
+
+    .filter-pill.inactive:hover {
+        background: #e2e8f0;
+        color: #1e293b;
+    }
+
+    .filter-pill .pill-count {
+        font-size: 0.68rem;
+        padding: 0.05rem 0.38rem;
+        border-radius: 50px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .filter-pill.active .pill-count {
+        background: rgba(255, 255, 255, 0.28);
+        color: #ffffff;
+    }
+
+    .filter-pill.inactive .pill-count {
+        background: #ffffff;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+    }
+
+    .search-input-group {
+        position: relative;
+        width: 185px;
+    }
+
+    .search-input-group .form-control {
+        border-radius: 50px;
+        padding-left: 1.9rem;
+        padding-right: 1.8rem;
+        font-size: 0.8rem;
+        border: 1px solid #cbd5e1;
+        background-color: #f8fafc;
+        height: 32px;
+    }
+
+    .search-input-group .form-control:focus {
+        background-color: #ffffff;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .search-input-group .search-icon {
+        position: absolute;
+        left: 0.7rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 0.78rem;
+        pointer-events: none;
+        z-index: 3;
+    }
+
+    .search-input-group .search-clear-btn {
+        position: absolute;
+        right: 0.4rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        background: none;
+        border: none;
+        padding: 0.15rem 0.35rem;
+        font-size: 0.78rem;
+        cursor: pointer;
+        z-index: 3;
+        text-decoration: none;
+    }
+
+    .search-input-group .search-clear-btn:hover {
+        color: #475569;
+    }
+
+    .req-num-badge {
+        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        font-size: 0.74rem;
+        font-weight: 700;
+        color: #2563eb;
+        background: #eff6ff;
+        padding: 0.12rem 0.4rem;
+        border-radius: 6px;
+        border: 1px solid #dbeafe;
+    }
+
+    .metric-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        height: 22px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        padding: 0 0.35rem;
+    }
+
+    /* High-contrast status badges */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.6rem;
+        border-radius: 50px;
+        font-size: 0.74rem;
+        font-weight: 600;
+        white-space: nowrap;
+        line-height: 1.2;
+    }
+    .status-badge-submitted {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+    }
+    .status-badge-review {
+        background: #fef3c7;
+        color: #92400e;
+        border: 1px solid #fde68a;
+    }
+    .status-badge-approved {
+        background: #e0f2fe;
+        color: #0369a1;
+        border: 1px solid #bae6fd;
+    }
+    .status-badge-live {
+        background: #eff6ff;
+        color: #1d4ed8;
+        border: 1px solid #bfdbfe;
+    }
+    .status-badge-sent {
+        background: #dcfce7;
+        color: #15803d;
+        border: 1px solid #bbf7d0;
+    }
+    .status-badge-completed {
+        background: #0f172a;
+        color: #ffffff;
+        border: 1px solid #0f172a;
+    }
+    .status-badge-rejected {
+        background: #fee2e2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+    }
+    .status-badge-changes {
+        background: #ffedd5;
+        color: #c2410c;
+        border: 1px solid #fed7aa;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4 admin-employer-requests-page">
+    <!-- Header Banner -->
+    <div class="employer-hero-banner mb-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 position-relative" style="z-index: 1;">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1 small text-white-50">
+                        <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}" class="text-white-50 text-decoration-none">Admin</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">Employer Requests</li>
+                    </ol>
+                </nav>
+                <div class="d-flex align-items-center gap-2 mt-1">
+                    <h3 class="fw-extrabold text-white mb-0">
+                        <i class="fa-solid fa-clipboard-question text-warning me-2"></i>Employer Talent Requests
+                    </h3>
+                    <span class="badge bg-danger bg-opacity-25 text-white border border-danger border-opacity-50 rounded-pill px-2.5 py-1 small fw-semibold">
+                        Admin Controller
+                    </span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <a href="{% url 'admin_jobs' %}" class="btn btn-outline-light btn-sm px-3.5 py-2 shadow-sm d-inline-flex align-items-center gap-1.5" style="border-radius: 10px;">
+                    <i class="fa-solid fa-briefcase"></i> Published Jobs & Radar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Pills & Search Bar -->
+    <div class="admin-requests-card p-3 mb-4">
+        <div class="d-flex flex-column flex-md-row gap-2 align-items-md-center justify-content-between">
+            <!-- Stage Filter Pills -->
+            <div class="filter-pills-bar flex-grow-1">
+                <a href="{% url 'admin_employer_requests' %}{% if query %}?q={{ query }}{% endif %}" class="filter-pill {% if not selected_status %}active{% else %}inactive{% endif %}">
+                    <span>All</span>
+                    <span class="pill-count">{{ status_counts.all }}</span>
+                </a>
+                <a href="{% url 'admin_employer_requests' %}?status=submitted{% if query %}&q={{ query }}{% endif %}" class="filter-pill {% if selected_status == 'submitted' %}active{% else %}inactive{% endif %}">
+                    <span>Submitted</span>
+                    <span class="pill-count">{{ status_counts.submitted }}</span>
+                </a>
+                <a href="{% url 'admin_employer_requests' %}?status=under_admin_review{% if query %}&q={{ query }}{% endif %}" class="filter-pill {% if selected_status == 'under_admin_review' %}active{% else %}inactive{% endif %}">
+                    <span>Under Review</span>
+                    <span class="pill-count">{{ status_counts.under_admin_review }}</span>
+                </a>
+                <a href="{% url 'admin_employer_requests' %}?status=approved{% if query %}&q={{ query }}{% endif %}" class="filter-pill {% if selected_status == 'approved' %}active{% else %}inactive{% endif %}">
+                    <span>Approved</span>
+                    <span class="pill-count">{{ status_counts.approved }}</span>
+                </a>
+                <a href="{% url 'admin_employer_requests' %}?status=job_posted{% if query %}&q={{ query }}{% endif %}" class="filter-pill {% if selected_status == 'job_posted' %}active{% else %}inactive{% endif %}">
+                    <span>Job Live</span>
+                    <span class="pill-count">{{ status_counts.job_posted }}</span>
+                </a>
+                <a href="{% url 'admin_employer_requests' %}?status=candidates_sent{% if query %}&q={{ query }}{% endif %}" class="filter-pill {% if selected_status == 'candidates_sent' %}active{% else %}inactive{% endif %}">
+                    <span>Sent</span>
+                    <span class="pill-count">{{ status_counts.candidates_sent }}</span>
+                </a>
+                <a href="{% url 'admin_employer_requests' %}?status=completed{% if query %}&q={{ query }}{% endif %}" class="filter-pill {% if selected_status == 'completed' %}active{% else %}inactive{% endif %}">
+                    <span>Completed</span>
+                    <span class="pill-count">{{ status_counts.completed }}</span>
+                </a>
+            </div>
+
+            <!-- Search Form -->
+            <form method="GET" action="{% url 'admin_employer_requests' %}" class="d-flex align-items-center m-0 flex-shrink-0">
+                {% if selected_status %}<input type="hidden" name="status" value="{{ selected_status }}">{% endif %}
+                <div class="search-input-group">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" name="q" class="form-control" placeholder="Search role, company..." value="{{ query }}">
+                    {% if query %}
+                        <a href="{% url 'admin_employer_requests' %}{% if selected_status %}?status={{ selected_status }}{% endif %}" class="search-clear-btn" title="Clear search">
+                            <i class="fa-solid fa-xmark"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Requests Table Card -->
+    <div class="admin-requests-card overflow-hidden">
+        <div class="table-responsive">
+            <table class="table mb-0 admin-requests-table align-middle">
+                <thead>
+                    <tr>
+                        <th style="width: 22%;">Req # & Position</th>
+                        <th style="width: 15%;">Employer</th>
+                        <th style="width: 22%;">Requirements Snapshot</th>
+                        <th class="text-center" style="width: 12%;">Stage / Status</th>
+                        <th class="text-center" style="width: 5%;">Applicants</th>
+                        <th class="text-center" style="width: 5%;">Qualified</th>
+                        <th class="text-center" style="width: 5%;">Sent</th>
+                        <th class="text-end" style="width: 14%; padding-right: 0.85rem;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for req in talent_requests %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-start gap-1.5">
+                                    <div>
+                                        <div class="d-flex align-items-center gap-1.5 mb-0.5">
+                                            <span class="req-num-badge">#{{ req.id }}</span>
+                                            <a href="{% url 'admin_employer_request_detail' req.id %}" class="fw-bold text-dark text-decoration-none hover-primary">
+                                                {{ req.title }}
+                                            </a>
+                                        </div>
+                                        <div class="text-muted" style="font-size: 0.72rem;">
+                                            <span><i class="fa-regular fa-calendar me-1"></i>{{ req.created_at|date:"M d, Y" }}</span>
+                                            <span class="mx-1">&bull;</span>
+                                            <span><i class="fa-solid fa-users me-1 text-primary"></i>{{ req.vacancies_count }} Vacanc{{ req.vacancies_count|pluralize:"y,ies" }}</span>
+                                            <span class="mx-1">&bull;</span>
+                                            <span>{{ req.employment_type }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="fw-semibold text-dark text-truncate" style="max-width: 150px;">{{ req.employer.display_name }}</div>
+                                <div class="text-muted text-truncate" style="font-size: 0.72rem; max-width: 150px;" title="{{ req.employer.user.email }}">
+                                    <i class="fa-regular fa-envelope me-1"></i>{{ req.employer.user.email }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="text-truncate small text-secondary mb-0.5" style="max-width: 210px;" title="{{ req.skills_required }}">
+                                    <strong class="text-dark">Skills:</strong> {{ req.skills_required }}
+                                </div>
+                                <div class="text-muted" style="font-size: 0.72rem;">
+                                    <span><strong>Exp:</strong> {{ req.experience_required|default:"Any" }}</span>
+                                    <span class="mx-1">&bull;</span>
+                                    <span><strong>Edu:</strong> {{ req.education_level|default:"Any" }}</span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                {% if req.status == 'submitted' %}
+                                    <span class="status-badge status-badge-submitted">
+                                        <i class="fa-solid fa-clock me-1"></i> Submitted
+                                    </span>
+                                {% elif req.status == 'under_admin_review' %}
+                                    <span class="status-badge status-badge-review">
+                                        <i class="fa-solid fa-hourglass-half me-1"></i> Under Review
+                                    </span>
+                                {% elif req.status == 'approved' %}
+                                    <span class="status-badge status-badge-approved">
+                                        <i class="fa-solid fa-circle-check me-1"></i> Approved
+                                    </span>
+                                {% elif req.status == 'job_posted' %}
+                                    <span class="status-badge status-badge-live">
+                                        <i class="fa-solid fa-globe me-1"></i> Job Live
+                                    </span>
+                                {% elif req.status == 'candidates_sent' %}
+                                    <span class="status-badge status-badge-sent">
+                                        <i class="fa-solid fa-paper-plane me-1"></i> Sent
+                                    </span>
+                                {% elif req.status == 'completed' %}
+                                    <span class="status-badge status-badge-completed">
+                                        <i class="fa-solid fa-flag-checkered me-1"></i> Completed
+                                    </span>
+                                {% elif req.status == 'rejected' %}
+                                    <span class="status-badge status-badge-rejected">
+                                        <i class="fa-solid fa-ban me-1"></i> Rejected
+                                    </span>
+                                {% elif req.status == 'changes_requested' %}
+                                    <span class="status-badge status-badge-changes">
+                                        <i class="fa-solid fa-triangle-exclamation me-1"></i> Changes Needed
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-light text-dark border rounded-pill px-2 py-1 text-nowrap">{{ req.get_status_display }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <span class="metric-badge bg-light text-dark border">{{ req.total_applicants_count }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="metric-badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25">{{ req.qualified_candidates_count }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="metric-badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 fw-bold">{{ req.sent_candidates_count }}</span>
+                            </td>
+                            <td class="text-end actions-cell" style="padding-right: 0.85rem;">
+                                <div class="d-inline-flex align-items-center justify-content-end request-actions flex-nowrap">
+                                    <a href="{% url 'admin_employer_request_detail' req.id %}" class="btn btn-sm btn-outline-secondary px-2 py-0.5 text-nowrap request-review-action" style="font-size: 0.74rem; border-radius: 6px;" title="Inspect & Manage Request">
+                                        Review
+                                    </a>
+                                    {% if req.status == 'approved' or not req.job_postings.exists %}
+                                        <a href="{% url 'admin_create_job_from_request' req.id %}" class="btn btn-sm btn-primary-custom px-2 py-0.5 text-nowrap shadow-xs request-post-action" style="font-size: 0.74rem; border-radius: 6px;" title="Create and Publish Job">
+                                            <i class="fa-solid fa-plus me-1"></i> Post
+                                        </a>
+                                    {% elif req.job_postings.exists %}
+                                        <a href="{% url 'admin_job_candidates' req.job_postings.first.id %}" class="btn btn-sm btn-success text-white px-2 py-0.5 text-nowrap shadow-xs request-candidates-action" style="font-size: 0.74rem; border-radius: 6px;" title="Manage Candidates & Dispatch">
+                                            <i class="fa-solid fa-users me-1"></i> Candidates
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center py-5">
+                                <div class="py-4">
+                                    <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center p-3 mb-3" style="width: 70px; height: 70px;">
+                                        <i class="fa-solid fa-folder-open text-muted fs-2"></i>
+                                    </div>
+                                    <h5 class="fw-bold text-dark mb-1">No Employer Talent Requests Found</h5>
+                                    <p class="text-muted small mb-0">
+                                        {% if query or selected_status %}
+                                            No talent requests match your current search or status filter.
+                                        {% else %}
+                                            When employers submit hiring requests, they will appear here for Admin evaluation and job publishing.
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

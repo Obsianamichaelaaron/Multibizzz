@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Multibiz Talent Solutions</title>
+    <style>
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+        body { margin: 0; padding: 0; width: 100% !important; background-color: #f1f5f9; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif; color: #1e293b; }
+        
+        .email-wrapper { width: 100%; background-color: #f1f5f9; padding: 30px 10px; }
+        .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08); border: 1px solid #e2e8f0; }
+        
+        /* Employer Hero */
+        .hero-banner {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #2563eb 100%);
+            padding: 35px 30px;
+            text-align: center;
+            color: #ffffff;
+        }
+        .brand-logo-text {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(37, 99, 235, 0.4);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            color: #ffffff;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .feature-bar {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            padding: 16px 30px;
+            text-align: center;
+        }
+        .feature-btn {
+            display: inline-block;
+            background-color: #ffffff;
+            color: #1e40af !important;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 10px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .email-body { padding: 35px 35px 25px 35px; }
+        .greeting-headline {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-top: 0;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+        }
+        .body-paragraph {
+            font-size: 15px;
+            line-height: 1.65;
+            color: #334155;
+            margin-bottom: 16px;
+        }
+        
+        .action-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 14px;
+        }
+        .action-card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 4px;
+        }
+        .action-card-desc {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+            margin: 0;
+        }
+        
+        .primary-cta-container { text-align: center; margin: 30px 0 25px 0; }
+        .primary-cta-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
+            color: #ffffff !important;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 14px 36px;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
+        }
+        
+        .sms-notice-box {
+            background-color: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 25px;
+            font-size: 13px;
+            color: #1e40af;
+            font-weight: 500;
+        }
+        
+        .email-footer {
+            background-color: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            padding: 25px 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+        .footer-links a { color: #2563eb; text-decoration: none; margin: 0 8px; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <div class="email-container">
+            
+            <div class="hero-banner">
+                <div class="brand-logo-text">Multibiz</div>
+                <div>
+                    <span class="hero-badge">Enterprise Talent Acquisition Suite</span>
+                </div>
+            </div>
+
+            <div class="feature-bar">
+                <a href="{{ site_url }}employer/post-job/" class="feature-btn">Post Your First Job Opening</a>
+            </div>
+
+            <div class="email-body">
+                <h1 class="greeting-headline">Welcome to Multibiz Talent Solutions</h1>
+
+                <p class="body-paragraph">
+                    Hi <strong>{{ user.first_name }}</strong>,
+                </p>
+
+                <p class="body-paragraph">
+                    Thank you for registering <strong>{{ company_name }}</strong> with Multibiz. We are excited to partner with your hiring team to discover, rank, and hire top-tier qualified candidates.
+                </p>
+
+                <p class="body-paragraph">
+                    Our platform uses machine learning to match candidates directly to your job requirements, saving hours of manual resume screening.
+                </p>
+
+                <!-- 3 Employer Quick Steps -->
+                <div style="margin-top: 25px; margin-bottom: 25px;">
+                    <div class="action-card">
+                        <div class="action-card-title">1. Complete Your Employer Profile</div>
+                        <p class="action-card-desc">Add your company address, description, and website to build trust with candidates.</p>
+                    </div>
+
+                    <div class="action-card">
+                        <div class="action-card-title">2. Publish Vacancies & Requirements</div>
+                        <p class="action-card-desc">Define required skills and competencies. Our AI automatically scores applicant fitment vectors.</p>
+                    </div>
+
+                    <div class="action-card">
+                        <div class="action-card-title">3. Manage Pipelines & Schedule Interviews</div>
+                        <p class="action-card-desc">Move candidates through Reviewed, Shortlisted, and Interviewed stages with built-in scheduling.</p>
+                    </div>
+                </div>
+
+                <div class="primary-cta-container">
+                    <a href="{{ site_url }}employer/dashboard/" class="primary-cta-btn">Access Employer Portal</a>
+                </div>
+
+                {% if user.phone %}
+                <div class="sms-notice-box">
+                    <strong>SMS Confirmation Dispatched:</strong> A welcome text notification has been sent to your business contact number (<code>{{ user.phone }}</code>).
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="email-footer">
+                <div class="footer-links" style="margin-bottom: 12px;">
+                    <a href="{{ site_url }}employer/candidates/">Candidate Radar</a> |
+                    <a href="{{ site_url }}employer/jobs/">My Vacancies</a> |
+                    <a href="{{ site_url }}services/">Hiring Support</a>
+                </div>
+                <div>
+                    &copy; {% now "Y" %} Multibiz Intelligent Talent Network. All rights reserved.<br>
+                    Automated system communication for enterprise account <strong>{{ user.email }}</strong>.
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

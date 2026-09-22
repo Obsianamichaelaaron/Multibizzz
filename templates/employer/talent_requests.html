@@ -1,0 +1,413 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Talent Requests - Multibiz{% endblock %}
+
+{% block extra_css %}
+<style>
+    .employer-requests-card {
+        border-radius: var(--mb-radius-md);
+        background: var(--mb-bg-surface);
+        box-shadow: var(--mb-shadow-sm);
+        border: 1px solid var(--mb-border);
+    }
+
+    .employer-requests-table {
+        width: 100%;
+        min-width: 860px;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .employer-requests-table thead th {
+        background: #f8fafc;
+        color: #475569;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        padding: 0.7rem 0.55rem;
+        white-space: nowrap;
+        border-bottom: 1px solid #e2e8f0;
+        vertical-align: middle;
+    }
+
+    .employer-requests-table tbody td {
+        padding: 0.75rem 0.55rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+        font-size: 0.82rem;
+    }
+
+    .employer-requests-table tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    .filter-pills-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.3rem;
+        min-width: 0;
+    }
+
+    .filter-pill {
+        font-size: 0.76rem;
+        font-weight: 600;
+        padding: 0.28rem 0.62rem;
+        border-radius: 50px;
+        transition: all 0.15s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        white-space: nowrap;
+        border: 1px solid transparent;
+    }
+
+    .filter-pill.active {
+        background: #2563eb;
+        color: #ffffff !important;
+        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+    }
+
+    .filter-pill.inactive {
+        background: #f1f5f9;
+        color: #475569;
+        border-color: #e2e8f0;
+    }
+
+    .filter-pill.inactive:hover {
+        background: #e2e8f0;
+        color: #1e293b;
+    }
+
+    .search-input-group {
+        position: relative;
+        width: min(185px, 100%);
+    }
+
+    .search-input-group .form-control {
+        border-radius: 50px;
+        padding-left: 1.9rem;
+        padding-right: 1.8rem;
+        font-size: 0.8rem;
+        border: 1px solid #cbd5e1;
+        background-color: #f8fafc;
+        height: 32px;
+    }
+
+    .search-input-group .form-control:focus {
+        background-color: #ffffff;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .search-input-group .search-icon {
+        position: absolute;
+        left: 0.7rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 0.78rem;
+        pointer-events: none;
+        z-index: 3;
+    }
+
+    .search-input-group .search-clear-btn {
+        position: absolute;
+        right: 0.4rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        background: none;
+        border: none;
+        padding: 0.15rem 0.35rem;
+        font-size: 0.78rem;
+        cursor: pointer;
+        z-index: 3;
+        text-decoration: none;
+    }
+
+    .search-input-group .search-clear-btn:hover {
+        color: #475569;
+    }
+
+    .metric-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        height: 22px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        padding: 0 0.35rem;
+    }
+
+    /* High-contrast status badges */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.6rem;
+        border-radius: 50px;
+        font-size: 0.74rem;
+        font-weight: 600;
+        white-space: nowrap;
+        line-height: 1.2;
+    }
+    .status-badge-submitted {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+    }
+    .status-badge-approved, .status-badge-live {
+        background: #eff6ff;
+        color: #1d4ed8;
+        border: 1px solid #bfdbfe;
+    }
+    .status-badge-sent {
+        background: #dcfce7;
+        color: #15803d;
+        border: 1px solid #bbf7d0;
+    }
+    .status-badge-completed {
+        background: #0f172a;
+        color: #ffffff;
+        border: 1px solid #0f172a;
+    }
+    .status-badge-rejected {
+        background: #fee2e2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+    }
+    .status-badge-changes {
+        background: #ffedd5;
+        color: #c2410c;
+        border: 1px solid #fed7aa;
+    }
+
+    .requests-column-role { width: 28%; }
+    .requests-column-date { width: 16%; }
+    .requests-column-stage { width: 14%; }
+    .requests-column-metric { width: 7%; }
+    .requests-column-actions { width: 17%; }
+
+    .request-id-box {
+        width: 32px;
+        height: 32px;
+        flex: 0 0 32px;
+        font-size: 0.76rem;
+        background: var(--mb-primary-subtle);
+        border: 1px solid var(--mb-primary-border);
+        border-radius: var(--mb-radius-sm);
+    }
+
+    .request-title-meta { font-size: 0.72rem; }
+    .request-date { font-size: 0.76rem; }
+    .request-date-relative { font-size: 0.68rem; }
+
+    .request-action {
+        font-size: 0.74rem;
+        border-radius: var(--mb-radius-sm);
+    }
+
+    @media (max-width: 767.98px) {
+        .employer-requests-card { padding: 0.85rem !important; }
+        .employer-requests-table { min-width: 780px; }
+        .filter-pills-bar {
+            width: 100%;
+            align-items: flex-start;
+        }
+        .filter-pills-bar > .text-muted { width: 100%; }
+        .search-input-group,
+        .search-input-group .form-control { width: 100%; }
+        .d-flex.flex-column.flex-md-row > form { width: 100%; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Hero Banner -->
+    <div class="employer-hero-banner mb-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 position-relative" style="z-index: 1;">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1 small text-white-50">
+                        <li class="breadcrumb-item"><a href="{% url 'employer_dashboard' %}" class="text-white-50 text-decoration-none">Dashboard</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">Talent Requests</li>
+                    </ol>
+                </nav>
+                <div class="d-flex align-items-center gap-2 mt-1">
+                    <h3 class="fw-extrabold text-white mb-0 fs-4">
+                        <i class="fa-solid fa-file-signature text-warning me-2"></i>Talent Requests
+                    </h3>
+                    <span class="badge bg-primary bg-opacity-25 text-white border border-primary border-opacity-50 rounded-pill px-2 py-1 small fw-semibold">
+                        {{ talent_requests|length }} Total Requests
+                    </span>
+                </div>
+            </div>
+            <div>
+                <a href="{% url 'employer_request_talent' %}" class="btn btn-primary-custom btn-sm px-3 py-2 shadow-sm d-inline-flex align-items-center gap-1">
+                    <i class="fa-solid fa-plus"></i> Submit New Talent Request
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Filters & Search -->
+    <div class="employer-requests-card p-3 mb-4">
+        <div class="d-flex flex-column flex-md-row gap-2 align-items-md-center justify-content-between">
+            <div class="filter-pills-bar flex-grow-1">
+                <span class="text-muted small fw-bold me-1 flex-shrink-0"><i class="fa-solid fa-filter text-primary me-1"></i> Stage:</span>
+                <a href="{% url 'employer_talent_requests' %}{% if query %}?q={{ query }}{% endif %}" class="filter-pill {% if not selected_status %}active{% else %}inactive{% endif %}">
+                    All Requests
+                </a>
+                <a href="{% url 'employer_talent_requests' %}?status=submitted{% if query %}&q={{ query }}{% endif %}" class="filter-pill {% if selected_status == 'submitted' %}active{% else %}inactive{% endif %}">
+                    Submitted
+                </a>
+                <a href="{% url 'employer_talent_requests' %}?status=job_posted{% if query %}&q={{ query }}{% endif %}" class="filter-pill {% if selected_status == 'job_posted' %}active{% else %}inactive{% endif %}">
+                    Job Live
+                </a>
+                <a href="{% url 'employer_talent_requests' %}?status=candidates_sent{% if query %}&q={{ query }}{% endif %}" class="filter-pill {% if selected_status == 'candidates_sent' %}active{% else %}inactive{% endif %}">
+                    Sent
+                </a>
+                <a href="{% url 'employer_talent_requests' %}?status=completed{% if query %}&q={{ query }}{% endif %}" class="filter-pill {% if selected_status == 'completed' %}active{% else %}inactive{% endif %}">
+                    Completed
+                </a>
+            </div>
+
+            <!-- Search Form -->
+            <form method="GET" action="{% url 'employer_talent_requests' %}" class="d-flex align-items-center m-0 flex-shrink-0">
+                {% if selected_status %}<input type="hidden" name="status" value="{{ selected_status }}">{% endif %}
+                <div class="search-input-group">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" name="q" class="form-control" placeholder="Search requests..." value="{{ query }}">
+                    {% if query %}
+                        <a href="{% url 'employer_talent_requests' %}{% if selected_status %}?status={{ selected_status }}{% endif %}" class="search-clear-btn" title="Clear search">
+                            <i class="fa-solid fa-xmark"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Requests Table Card -->
+    <div class="employer-requests-card overflow-hidden">
+        <div class="table-responsive">
+            <table class="table employer-requests-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th class="requests-column-role">Request ID & Role</th>
+                        <th class="requests-column-date">Submission Date</th>
+                        <th class="requests-column-stage text-center">Request Stage</th>
+                        <th class="requests-column-metric text-center">Applicants</th>
+                        <th class="requests-column-metric text-center">Qualified</th>
+                        <th class="requests-column-metric text-center">Sent to You</th>
+                        <th class="requests-column-actions text-end pe-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for req in talent_requests %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="request-id-box company-avatar-box d-inline-flex align-items-center justify-content-center fw-bold text-primary">
+                                        #{{ req.id }}
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark">
+                                            <a href="{% url 'employer_talent_request_detail' req.id %}" class="text-dark text-decoration-none hover-primary">
+                                                {{ req.title }}
+                                            </a>
+                                        </div>
+                                        <div class="text-muted request-title-meta">
+                                            <i class="fa-solid fa-users me-1 text-primary"></i> {{ req.vacancies_count }} Vacanc{{ req.vacancies_count|pluralize:"y,ies" }} &bull; {{ req.location }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-muted">
+                                <div class="request-date"><i class="fa-regular fa-calendar me-1"></i>{{ req.created_at|date:"M d, Y" }}</div>
+                                <div class="text-muted request-date-relative">{{ req.created_at|timesince }} ago</div>
+                            </td>
+                            <td class="text-center">
+                                {% if req.status == 'submitted' %}
+                                    <span class="status-badge status-badge-submitted">
+                                        <i class="fa-solid fa-clock me-1"></i> Submitted
+                                    </span>
+                                {% elif req.status == 'approved' or req.status == 'job_posted' %}
+                                    <span class="status-badge status-badge-live">
+                                        <i class="fa-solid fa-bullhorn me-1"></i> Job Live
+                                    </span>
+                                {% elif req.status == 'candidates_sent' or req.status == 'employer_review' %}
+                                    <span class="status-badge status-badge-sent">
+                                        <i class="fa-solid fa-wand-magic-sparkles text-warning me-1"></i> Candidates Sent
+                                    </span>
+                                {% elif req.status == 'completed' %}
+                                    <span class="status-badge status-badge-completed">
+                                        <i class="fa-solid fa-circle-check me-1"></i> Completed
+                                    </span>
+                                {% elif req.status == 'rejected' %}
+                                    <span class="status-badge status-badge-rejected">
+                                        <i class="fa-solid fa-ban me-1"></i> Rejected
+                                    </span>
+                                {% elif req.status == 'changes_requested' %}
+                                    <span class="status-badge status-badge-changes">
+                                        <i class="fa-solid fa-pen-to-square me-1"></i> Changes Needed
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-light text-dark border rounded-pill px-2 py-1 text-nowrap">{{ req.get_status_display }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <span class="metric-badge bg-light text-dark border">{{ req.total_applicants_count }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="metric-badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25">{{ req.qualified_candidates_count }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="metric-badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 fw-bold">{{ req.sent_candidates_count }}</span>
+                            </td>
+                            <td class="text-end pe-3">
+                                <div class="d-inline-flex align-items-center justify-content-end gap-1 flex-nowrap">
+                                    <a href="{% url 'employer_talent_request_detail' req.id %}" class="btn btn-sm btn-outline-secondary px-2 py-1 text-nowrap request-action">
+                                        Details
+                                    </a>
+                                    {% if req.sent_candidates_count > 0 %}
+                                        <a href="{% url 'recommended_candidates' %}?request_id={{ req.id }}" class="btn btn-sm btn-primary-custom px-2 py-1 text-nowrap shadow-xs request-action" title="Review Candidates in Talent Radar">
+                                            <i class="fa-solid fa-wand-magic-sparkles me-1 text-warning"></i> Radar
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center py-5">
+                                <div class="py-4">
+                                    <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center p-3 mb-3" style="width: 70px; height: 70px;">
+                                        <i class="fa-solid fa-file-circle-plus text-primary fs-2 opacity-75"></i>
+                                    </div>
+                                    <h5 class="fw-bold text-dark mb-1">No Talent Requests Found</h5>
+                                    <p class="text-muted small mb-0">
+                                        {% if query or selected_status %}
+                                            No talent requests match your search criteria.
+                                        {% else %}
+                                            Submit your hiring specifications to Multibiz and our recruitment engine will match qualified candidates for you.
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Enterprise Solutions & Corporate Pipelines - Multibiz{% endblock %}
+
+{% block content %}
+<!-- =========================================================================
+     1. HERO HEADER WITH MESH GRADIENT
+     ========================================================================= -->
+<section class="hero-mesh-bg text-white py-5 py-lg-6">
+    <div class="container py-4 position-relative" style="z-index: 2;">
+        <div class="text-center max-w-800 mx-auto animate-slide-up" style="max-width: 780px;">
+            <span class="badge bg-primary bg-opacity-25 text-info px-3 py-2 rounded-pill fw-semibold mb-3 border border-info border-opacity-25 shadow-sm">
+                <i class="fa-solid fa-lightbulb me-1 text-warning"></i> Corporate Workforce Infrastructure
+            </span>
+            <h1 class="display-4 fw-extrabold text-white mb-3" style="letter-spacing: -1px;">
+                Tailored Hiring Solutions for Enterprise Organizations
+            </h1>
+            <p class="lead text-light text-opacity-75 mb-4" style="font-size: 1.1rem; line-height: 1.7;">
+                High-performance candidate sourcing, automated screening, and predictive match intelligence engineered to scale engineering, corporate, and operational teams.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'register' %}?tab=employer" class="btn btn-primary-custom px-4 py-2 shadow">
+                    <i class="fa-solid fa-building me-1"></i> Register as Employer
+                </a>
+                <a href="{% url 'careers' %}" class="btn btn-outline-light rounded-pill px-4 py-2">
+                    <i class="fa-solid fa-briefcase me-1"></i> View Live Board
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     2. ENTERPRISE CAPABILITIES SHOWCASE
+     ========================================================================= -->
+<section class="py-5 py-lg-6" style="background-color: var(--surface-bg);">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 animate-slide-up">
+                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold mb-2">Corporate Solutions</span>
+                <h2 class="fw-bold fs-1 text-dark mb-3">Custom Recruitment Pipelines Built for Speed & Precision</h2>
+                <p class="text-secondary mb-4" style="line-height: 1.8;">
+                    Eliminate recruiting bottlenecks with tailored talent pipelines. Filter hundreds of applicants dynamically, inspect automated ML fit scores, and manage interview schedules in one central dashboard.
+                </p>
+
+                <div class="d-flex flex-column gap-3 mb-4">
+                    <div class="d-flex gap-3 align-items-center">
+                        <div class="bg-primary bg-opacity-10 text-primary p-2 rounded-circle fs-5 flex-shrink-0" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <span class="text-dark fw-semibold">Dynamic Machine Learning ranking for incoming candidate cohorts</span>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center">
+                        <div class="bg-success bg-opacity-10 text-success p-2 rounded-circle fs-5 flex-shrink-0" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <span class="text-dark fw-semibold">Integrated video interview booking with Google Meet and calendar sync</span>
+                    </div>
+                    <div class="d-flex gap-3 align-items-center">
+                        <div class="bg-info bg-opacity-10 text-info p-2 rounded-circle fs-5 flex-shrink-0" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <span class="text-dark fw-semibold">Multi-recruiter remark history and candidate evaluation timeline</span>
+                    </div>
+                </div>
+
+                <a href="{% url 'register' %}?tab=employer" class="btn btn-primary-custom px-4 py-2 shadow-sm">
+                    <i class="fa-solid fa-user-plus me-1"></i> Get Started as an Employer
+                </a>
+            </div>
+
+            <div class="col-lg-6 text-center">
+                <div class="position-relative d-inline-block w-100 hero-floating-box" style="max-width: 520px;">
+                    <img src="{% static 'images/picture3.png' %}" alt="Enterprise Solutions" class="img-fluid rounded-4 shadow-lg border w-100" style="max-height: 440px; object-fit: cover;" onerror="this.src='{% static 'images/b2.png' %}'">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     3. FOUR ENTERPRISE PILLARS
+     ========================================================================= -->
+<section class="py-5 py-lg-6" style="background-color: var(--surface-bg);">
+    <div class="container">
+        <div class="text-center max-w-700 mx-auto mb-5">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold mb-2">Enterprise Features</span>
+            <h2 class="fw-bold fs-1 text-dark">Engineered for Modern Hiring Teams</h2>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="pillar-card-modern pillar-blue shadow-sm text-center">
+                    <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle d-inline-block fs-3 mb-3">
+                        <i class="fa-solid fa-sitemap"></i>
+                    </div>
+                    <h5 class="fw-bold text-dark mb-2">Custom Taxonomies</h5>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        Define target degree programs, skill requirements, and custom criteria for every job opening.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="pillar-card-modern pillar-green shadow-sm text-center">
+                    <div class="bg-success bg-opacity-10 text-success p-3 rounded-circle d-inline-block fs-3 mb-3">
+                        <i class="fa-solid fa-filter-circle-dollar"></i>
+                    </div>
+                    <h5 class="fw-bold text-dark mb-2">Automated Funnels</h5>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        Automatically filter and sort candidates by ML fit scores from Excellent (85%+) to Needs Review.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="pillar-card-modern pillar-amber shadow-sm text-center">
+                    <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-circle d-inline-block fs-3 mb-3">
+                        <i class="fa-solid fa-users-viewfinder"></i>
+                    </div>
+                    <h5 class="fw-bold text-dark mb-2">Team Collaboration</h5>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        Share interviewer notes, candidate remarks, and status transitions with hiring stakeholders.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="pillar-card-modern pillar-blue shadow-sm text-center">
+                    <div class="bg-info bg-opacity-10 text-info p-3 rounded-circle d-inline-block fs-3 mb-3">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h5 class="fw-bold text-dark mb-2">Compliance & Logs</h5>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        Cryptographic audit trails and access control logging for enterprise data governance.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

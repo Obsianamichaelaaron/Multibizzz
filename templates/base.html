@@ -1,0 +1,620 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Multibiz - Career & Intelligent Talent Solutions{% endblock %}</title>
+
+    <!-- Meta SEO -->
+    <meta name="description"
+        content="{% block meta_description %}Multibiz connects top candidates with leading employers through AI resume parsing, candidate scoring, and seamless hiring pipelines.{% endblock %}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'images/mbLogo.png' %}">
+
+    <!-- Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS & FontAwesome 6 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Multibiz Modern Theme Design System -->
+    <link rel="stylesheet" href="{% static 'css/multibiz-theme.css' %}?v=20260920_v6">
+
+    <!-- Anti-Flash Theme Initializer -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('mb_theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-bs-theme', savedTheme);
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.setAttribute('data-bs-theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-bs-theme', 'light');
+            }
+        })();
+    </script>
+
+    <!-- Custom Theme Overrides -->
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            --accent-color: #0ea5e9;
+            --accent-hover: #0284c7;
+            --dark-navy: #0f172a;
+            --card-bg: #ffffff;
+            --surface-bg: #dbe2ea;
+            --mb-bg-main: #dbe2ea;
+            --border-color: #cbd5e1;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --border-radius-lg: 16px;
+            --border-radius-md: 10px;
+            --box-shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.06);
+            --box-shadow-md: 0 10px 26px rgba(15, 23, 42, 0.09);
+            --box-shadow-lg: 0 18px 40px rgba(15, 23, 42, 0.12);
+        }
+
+        html,
+        body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+            margin: 0;
+            padding: 0;
+            background-color: var(--surface-bg) !important;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            color: var(--text-main);
+            background-color: var(--surface-bg) !important;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main.main-content {
+            background-color: var(--surface-bg) !important;
+            flex: 1 0 auto;
+        }
+
+        /* Navbar Modern - Sleek Compact Size */
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.25s ease;
+            padding: 0.2rem 0;
+            height: 50px;
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .navbar-brand img,
+        .navbar-brand-logo {
+            height: 22px;
+            max-height: 22px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .navbar-brand-text {
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-link {
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: var(--text-main);
+            padding: 0.22rem 0.65rem !important;
+            border-radius: 9999px;
+            line-height: 1.25;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--accent-hover);
+            background-color: rgba(14, 165, 233, 0.08);
+            font-weight: 600;
+        }
+
+        .ui-avatar-sm {
+            width: 30px !important;
+            height: 30px !important;
+            min-width: 30px !important;
+            min-height: 30px !important;
+            font-size: 0.85rem !important;
+        }
+
+        .navbar-profile-button {
+            height: 30px !important;
+            padding: 0.15rem 0.65rem !important;
+            font-size: 0.78rem !important;
+        }
+
+        .navbar-profile-name {
+            max-width: 110px !important;
+            font-size: 0.78rem !important;
+        }
+
+        /* Buttons Modern */
+        .btn-primary-custom {
+            background: var(--primary-gradient);
+            color: #ffffff;
+            border: none;
+            padding: 0.65rem 1.4rem;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45);
+            color: #ffffff;
+        }
+
+        .btn-outline-custom {
+            background: transparent;
+            color: #1e3a8a;
+            border: 1.5px solid #3b82f6;
+            padding: 0.6rem 1.3rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline-custom:hover {
+            background: #3b82f6;
+            color: #ffffff;
+            border-color: #3b82f6;
+        }
+
+        /* Card Styles - Pure White to Stand Out on Darkened Background for All Roles */
+        .custom-card, 
+        .card, 
+        .metric-card-pro, 
+        .job-card-pro, 
+        .pillar-card-modern, 
+        .content-card, 
+        .dashboard-card,
+        .analytics-chart-card,
+        .employer-requests-card,
+        .radar-control-card,
+        .radar-candidate-card,
+        .job-item-card,
+        .job-detail-sticky-pane,
+        .audit-stat-card,
+        .cms-stat-card,
+        .application-panel,
+        .chat-layout,
+        .auth-card,
+        .overview-card,
+        .stat-card {
+            background: #ffffff !important;
+            background-color: #ffffff !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.07), 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+            transition: all 0.25s ease;
+        }
+
+        .job-item-card.active {
+            background: #f0f7ff !important;
+            background-color: #f0f7ff !important;
+            border-color: #2563eb !important;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.16) !important;
+        }
+
+        .custom-card:hover, 
+        .card:hover, 
+        .metric-card-pro:hover, 
+        .job-card-pro:hover,
+        .employer-requests-card:hover,
+        .radar-candidate-card:hover,
+        .job-item-card:hover,
+        .audit-stat-card:hover,
+        .cms-stat-card:hover {
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12) !important;
+            border-color: #94a3b8 !important;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Mesh Background & Core Shared Components */
+        .hero-mesh-bg {
+            background: linear-gradient(135deg, #0b1120 0%, #0f172a 50%, #1e3a8a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-mesh-bg::before {
+            content: "";
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, rgba(37, 99, 235, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-mesh-bg::after {
+            content: "";
+            position: absolute;
+            bottom: -100px;
+            left: 10%;
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.2) 0%, rgba(14, 165, 233, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .company-avatar-box {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            min-height: 44px;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.08);
+        }
+
+        .skill-chip {
+            display: inline-flex;
+            align-items: center;
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+            border-radius: 9999px;
+            padding: 0.3rem 0.75rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            line-height: 1.3;
+            transition: all 0.2s ease;
+        }
+
+        .skill-chip:hover {
+            background: #dbeafe;
+            border-color: #93c5fd;
+            transform: translateY(-1px);
+        }
+
+        /* Match Badge */
+        .badge-match {
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+        }
+
+        .badge-match-excellent {
+            background-color: #ecfdf5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
+
+        .badge-match-good {
+            background-color: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+        }
+
+        .badge-match-average {
+            background-color: #fffbeb;
+            color: #d97706;
+            border: 1px solid #fde68a;
+        }
+
+        .badge-match-poor {
+            background-color: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        /* Status Badges */
+        .badge-status {
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            text-transform: capitalize;
+        }
+
+        .badge-status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-status-reviewed {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .badge-status-shortlisted {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-status-interviewed {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .badge-status-accepted {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Floating Messages Widget Button */
+        .floating-chat-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 24px rgba(30, 58, 138, 0.35);
+            z-index: 1040;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .floating-chat-btn:hover {
+            transform: scale(1.08);
+            color: white;
+            box-shadow: 0 12px 30px rgba(30, 58, 138, 0.45);
+        }
+
+        .chat-unread-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            border: 2px solid white;
+        }
+
+        /* Footer Modern */
+        footer {
+            margin-top: auto;
+            background: var(--dark-navy);
+            color: #cbd5e1;
+            padding-top: 4rem;
+            padding-bottom: 2rem;
+        }
+
+        footer a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: #38bdf8;
+        }
+
+        .main-content {
+            flex: 1 0 auto;
+        }
+
+        /* Unified Dark Enterprise Hero Banner */
+        .employer-hero-banner,
+        .radar-hero-banner {
+            background: linear-gradient(135deg, #0b1120 0%, #0f172a 50%, #1e3a8a 100%) !important;
+            border-radius: 20px !important;
+            padding: 1.75rem 2rem !important;
+            color: #ffffff !important;
+            position: relative !important;
+            overflow: hidden !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 10px 25px -3px rgba(15, 23, 42, 0.15) !important;
+            margin-bottom: 1.75rem !important;
+        }
+
+        .employer-hero-banner::before,
+        .radar-hero-banner::before {
+            content: "";
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 260px;
+            height: 260px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(37, 99, 235, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .employer-hero-banner::after,
+        .radar-hero-banner::after {
+            content: "";
+            position: absolute;
+            bottom: -50px;
+            left: 20%;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.25) 0%, rgba(124, 58, 237, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .employer-hero-banner nav[aria-label="breadcrumb"],
+        .radar-hero-banner nav[aria-label="breadcrumb"] {
+            display: none !important;
+        }
+
+        /* Auto-Dismissing Flash Notifications */
+        .auto-dismiss-alert {
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), max-height 0.5s ease, margin 0.5s ease, padding 0.5s ease;
+            max-height: 200px;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
+            border-width: 1px;
+        }
+
+        .auto-dismiss-alert.alert-hiding {
+            opacity: 0 !important;
+            transform: translateY(-12px) scale(0.98);
+            max-height: 0 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            border-width: 0 !important;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body
+    class="{% if user.is_authenticated and user.is_employer %}employer-portal-page{% elif user.is_authenticated and user.is_admin_user %}admin-portal-page{% elif user.is_authenticated and user.is_applicant %}applicant-portal-page{% endif %}">
+
+    <!-- Navigation Bar -->
+    {% include 'components/navbar.html' %}
+
+    {% if messages %}
+    <!-- Flash Messages Container -->
+    <div class="container mt-0" id="flashMessagesContainer">
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'success' %}success{% elif message.tags == 'warning' %}warning{% else %}info{% endif %} alert-dismissible fade show d-flex align-items-center gap-2 auto-dismiss-alert"
+            role="alert">
+            <i
+                class="fa-solid {% if message.tags == 'success' %}fa-circle-check text-success{% elif message.tags == 'error' %}fa-circle-exclamation text-danger{% elif message.tags == 'warning' %}fa-triangle-exclamation text-warning{% else %}fa-circle-info text-info{% endif %} fs-5"></i>
+            <div class="fw-medium small">{{ message }}</div>
+            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content Block -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Floating Messages Button (if authenticated) -->
+    {% if user.is_authenticated %}
+    <a href="{% url 'chat_center' %}" class="floating-chat-btn" title="Open Messages">
+        <i class="fa-solid fa-comments"></i>
+        {% if unread_messages_count > 0 %}
+        <span class="chat-unread-badge">{{ unread_messages_count }}</span>
+        {% endif %}
+    </a>
+    {% endif %}
+
+    <!-- Footer -->
+    {% include 'components/footer.html' %}
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Global AJAX CSRF token helper -->
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        // Auto-dismiss flash notifications after 2 seconds
+        document.addEventListener('DOMContentLoaded', function () {
+            const alerts = document.querySelectorAll('.auto-dismiss-alert');
+            alerts.forEach(function (alertEl) {
+                let dismissTimer;
+                const startDismissTimer = () => {
+                    dismissTimer = setTimeout(function () {
+                        alertEl.classList.add('alert-hiding');
+                        setTimeout(function () {
+                            try {
+                                const bsAlert = bootstrap.Alert.getOrCreateInstance(alertEl);
+                                if (bsAlert) {
+                                    bsAlert.close();
+                                } else {
+                                    alertEl.remove();
+                                }
+                            } catch (e) {
+                                alertEl.remove();
+                            }
+                        }, 500); // Wait for smooth CSS transition
+                    }, 2000); // 2 seconds display time
+                };
+
+                startDismissTimer();
+
+                // Pause auto-dismiss if user hovers with mouse
+                alertEl.addEventListener('mouseenter', function () {
+                    clearTimeout(dismissTimer);
+                });
+
+                // Resume auto-dismiss when user moves mouse away
+                alertEl.addEventListener('mouseleave', function () {
+                    startDismissTimer();
+                });
+            });
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

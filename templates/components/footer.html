@@ -1,0 +1,72 @@
+{% load static %}
+<footer>
+    <div class="container">
+        <div class="row g-4 mb-5">
+            <!-- Brand & Mission -->
+            <div class="col-lg-4 col-md-6">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <img src="{% static 'images/mbLogo.png' %}" alt="Multibiz" height="36" onerror="this.style.display='none'">
+                    <span class="fs-4 fw-bold text-white">Multibiz</span>
+                </div>
+                <p class="text-secondary small mb-4 footer-mission">
+                    Empowering talent and enterprise through advanced AI candidate matching, automated resume analytics, verified qualifications, and seamless recruitment workflows.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="mailto:contact@multibiz.com.ph" class="btn btn-dark btn-sm rounded-circle p-2 ui-avatar-sm" aria-label="Email Multibiz"><i class="fa-solid fa-envelope text-info"></i></a>
+                    <a href="tel:+6328888249" class="btn btn-dark btn-sm rounded-circle p-2 ui-avatar-sm" aria-label="Call Multibiz"><i class="fa-solid fa-phone text-primary"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <h6 class="text-white fw-bold mb-3">Platform</h6>
+                <ul class="list-unstyled small d-flex flex-column gap-2">
+                    <li><a href="{% url 'careers' %}">Browse Careers</a></li>
+                    <li><a href="{% url 'services' %}">Our Services</a></li>
+                    <li><a href="{% url 'solutions' %}">Enterprise Solutions</a></li>
+                    <li><a href="{% url 'about' %}">About Multibiz</a></li>
+                    <li><a href="{% url 'login' %}">Portal Sign In</a></li>
+                </ul>
+            </div>
+
+            <!-- Candidate Services -->
+            <div class="col-lg-3 col-md-6 col-6">
+                <h6 class="text-white fw-bold mb-3">For Candidates</h6>
+                <ul class="list-unstyled small d-flex flex-column gap-2">
+                    <li><a href="{% url 'register' %}?tab=applicant">Create Jobseeker Profile</a></li>
+                    <li><a href="{% url 'careers' %}">AI Job Matches</a></li>
+                    <li><a href="{% url 'chatbot_view' %}">Career Guidance Chatbot</a></li>
+                    <li><a href="{% url 'about' %}">Skill Assessment Framework</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact & Office -->
+            <div class="col-lg-3 col-md-6">
+                <h6 class="text-white fw-bold mb-3">Headquarters</h6>
+                <ul class="list-unstyled small text-secondary d-flex flex-column gap-3">
+                    <li class="d-flex align-items-start gap-2">
+                        <i class="fa-solid fa-location-dot text-primary mt-1"></i>
+                        <span>High Street South Corporate Plaza, Bonifacio Global City, Metro Manila</span>
+                    </li>
+                    <li class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-envelope text-primary"></i>
+                        <span>contact@multibiz.com.ph</span>
+                    </li>
+                    <li class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-phone text-primary"></i>
+                        <span>+63 (02) 8888-BIZ (249)</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-top border-secondary pt-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 small text-secondary">
+            <div>&copy; 2026 Multibiz Inc. All rights reserved. Powered by Python & Django.</div>
+            <div class="d-flex gap-4">
+                <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
+                <a href="{% url 'terms_conditions' %}">Terms and Conditions</a>
+                <a href="{% url 'cookie_policy' %}">Cookie Policy</a>
+            </div>
+        </div>
+    </div>
+</footer>

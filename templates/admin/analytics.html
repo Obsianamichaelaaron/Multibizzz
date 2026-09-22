@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin Analytics - Multibiz{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-dark mb-1">Platform Analytics</h3>
+            <p class="text-secondary small mb-0">Statistical breakdown of talent acquisition, job match scores, and application volume.</p>
+        </div>
+    </div>
+
+    <!-- Overview Metrics -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4">
+                <div class="text-muted small fw-semibold">Average Match Score</div>
+                <div class="display-6 fw-bold text-primary mt-1">{{ avg_match_score }}%</div>
+                <div class="text-success small mt-1"><i class="fa-solid fa-arrow-trend-up me-1"></i> Healthy talent alignment</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4">
+                <div class="text-muted small fw-semibold">New Users (Last 30 Days)</div>
+                <div class="display-6 fw-bold text-info mt-1">{{ new_users_30d }}</div>
+                <div class="text-muted small mt-1">Platform registrations</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4">
+                <div class="text-muted small fw-semibold">Applications (Last 30 Days)</div>
+                <div class="display-6 fw-bold text-success mt-1">{{ new_apps_30d }}</div>
+                <div class="text-muted small mt-1">Active candidate applications</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4">
+                <div class="text-muted small fw-semibold">Total Job Opportunities</div>
+                <div class="display-6 fw-bold text-dark mt-1">{{ total_jobs }}</div>
+                <div class="text-muted small mt-1">From active employer partners</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts and Distributions -->
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4 h-100">
+                <h5 class="fw-bold text-dark mb-4"><i class="fa-solid fa-chart-pie text-primary me-2"></i>Applications by Pipeline Status</h5>
+                <div class="d-flex flex-column gap-3">
+                    {% for st in status_counts %}
+                        <div>
+                            <div class="d-flex justify-content-between small fw-semibold mb-1">
+                                <span class="text-capitalize">{{ st.status }}</span>
+                                <span>{{ st.count }} applications</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar {% if st.status == 'accepted' %}bg-success{% elif st.status == 'interviewed' %}bg-warning{% elif st.status == 'shortlisted' %}bg-info{% else %}bg-primary{% endif %} auto-progress-bar" role="progressbar" data-progress="{{ st.count }}0"></div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="text-muted small">No application status data available.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4 h-100">
+                <h5 class="fw-bold text-dark mb-4"><i class="fa-solid fa-briefcase text-info me-2"></i>Job Postings by Employment Type</h5>
+                <div class="d-flex flex-column gap-3">
+                    {% for jt in jobs_by_type %}
+                        <div>
+                            <div class="d-flex justify-content-between small fw-semibold mb-1">
+                                <span class="text-capitalize">{{ jt.employment_type }}</span>
+                                <span>{{ jt.count }} postings</span>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-info auto-progress-bar" role="progressbar" data-progress="{{ jt.count }}5"></div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="text-muted small">No employment type data available.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.querySelectorAll('.auto-progress-bar').forEach(function(bar) {
+        const p = bar.getAttribute('data-progress');
+        if (p) {
+            bar.style.width = Math.min(parseInt(p, 10) || 0, 100) + '%';
+        }
+    });
+</script>
+{% endblock %}

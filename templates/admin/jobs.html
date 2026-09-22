@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Jobs Oversight - Multibiz Admin{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="employer-hero-banner mb-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 position-relative" style="z-index: 1;">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1 small text-white-50">
+                        <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}" class="text-white-50 text-decoration-none">Admin</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">Job Postings</li>
+                    </ol>
+                </nav>
+                <div class="d-flex align-items-center gap-2 mt-1">
+                    <h3 class="fw-extrabold text-white mb-0">
+                        <i class="fa-solid fa-briefcase text-warning me-2"></i>Job Postings
+                    </h3>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap align-items-center gap-2">
+                <a href="{% url 'admin_employer_requests' %}" class="btn btn-warning text-dark fw-bold btn-sm px-3 py-2 shadow-sm ui-action-button">
+                    <i class="fa-solid fa-clipboard-question me-1"></i> Employer Requests
+                </a>
+                <a href="{% url 'admin_create_job' %}" class="btn btn-primary-custom btn-sm px-3 py-2 shadow-sm text-white ui-action-button">
+                    <i class="fa-solid fa-plus me-1"></i> Create Job Posting
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="custom-card p-3 bg-white border-0 shadow-sm rounded-4 mb-4">
+        <form method="GET" action="{% url 'admin_jobs' %}">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-7">
+                    <input type="text" name="q" value="{{ query }}" class="form-control bg-light" placeholder="Search by job title, employer, or required skills...">
+                </div>
+                <div class="col-md-3">
+                    <select name="status" class="form-select bg-light" onchange="this.form.submit()">
+                        <option value="">All Statuses</option>
+                        <option value="active" {% if status_filter == 'active' %}selected{% endif %}>Active</option>
+                        <option value="draft" {% if status_filter == 'draft' %}selected{% endif %}>Draft</option>
+                        <option value="closed" {% if status_filter == 'closed' %}selected{% endif %}>Closed</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex gap-1">
+                    <button type="submit" class="btn btn-primary-custom flex-grow-1">Filter Jobs</button>
+                    {% if query or status_filter %}
+                        <a href="{% url 'admin_jobs' %}" class="btn btn-outline-secondary d-flex align-items-center justify-content-center" title="Reset Filters">
+                            <i class="fa-solid fa-xmark"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Jobs Table -->
+    <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4">
+        <div class="table-responsive">
+            <table class="table align-middle table-hover mb-0">
+                <thead class="table-light small">
+                    <tr>
+                        <th>Job Title & Origin</th>
+                        <th>Employer</th>
+                        <th>Type & Location</th>
+                        <th>Applicants & Radar</th>
+                        <th>Status</th>
+                        <th>Posted</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in jobs %}
+                        <tr>
+                            <td>
+                                <div>
+                                    <a href="{% url 'admin_job_candidates' job.pk %}" class="fw-bold text-dark text-decoration-none hover-primary">
+                                        {{ job.title }}
+                                    </a>
+                                </div>
+                                <div class="text-muted small" style="font-size: 0.75rem;">
+                                    {% if job.talent_request %}
+                                        <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25">
+                                            <i class="fa-solid fa-link me-1"></i>Req #{{ job.talent_request.id }}
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-secondary bg-opacity-10 text-secondary">Standalone Posting</span>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="fw-semibold text-dark">{{ job.company_name }}</div>
+                            </td>
+                            <td>
+                                <div>{{ job.get_employment_type_display }}</div>
+                                <div class="text-muted small">{{ job.location }}</div>
+                            </td>
+                            <td>
+                                <a href="{% url 'admin_job_candidates' job.pk %}" class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 text-decoration-none py-1.5 px-2">
+                                    <i class="fa-solid fa-users-viewfinder me-1"></i>{{ job.applicant_count }} Candidates
+                                </a>
+                            </td>
+                            <td>
+                                <span class="badge {% if job.status == 'active' %}bg-success{% elif job.status == 'draft' %}bg-warning text-dark{% else %}bg-secondary{% endif %} text-capitalize">
+                                    {{ job.status }}
+                                </span>
+                            </td>
+                            <td class="text-muted small">{{ job.posted_at|date:"M d, Y" }}</td>
+                            <td class="text-end">
+                                <div class="d-inline-flex gap-1">
+                                    <a href="{% url 'admin_job_candidates' job.pk %}" class="btn btn-sm btn-primary shadow-sm" title="Manage Candidates">
+                                        <i class="fa-solid fa-users-viewfinder me-1"></i> Candidates
+                                    </a>
+                                    <a href="{% url 'admin_edit_job' job.pk %}" class="btn btn-sm btn-outline-secondary" title="Edit Job">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                    <a href="{% url 'admin_delete_job' job.pk %}" onclick="return confirm('Permanently delete this job posting?');" class="btn btn-sm btn-outline-danger" title="Delete Job">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="7" class="text-center py-5 text-muted small">No job postings found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

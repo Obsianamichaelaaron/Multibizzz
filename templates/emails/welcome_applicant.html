@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Multibiz Intelligence</title>
+    <style>
+        /* Email Reset & Responsive Styles */
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
+        body { margin: 0; padding: 0; width: 100% !important; background-color: #f1f5f9; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif; color: #1e293b; }
+        
+        .email-wrapper { width: 100%; background-color: #f1f5f9; padding: 30px 10px; }
+        .email-container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08); border: 1px solid #e2e8f0; }
+        
+        /* Vibrant Top Brand Hero (Jobstreet Inspired) */
+        .hero-banner {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #06b6d4 100%);
+            padding: 35px 30px;
+            text-align: center;
+            color: #ffffff;
+        }
+        .brand-logo-text {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #ffffff;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Vibrant Magenta Feature Bar (As shown in Jobstreet screenshot) */
+        .feature-bar {
+            background-color: #e11d48;
+            background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+            padding: 16px 30px;
+            text-align: center;
+        }
+        .feature-btn {
+            display: inline-block;
+            background-color: #2563eb;
+            color: #ffffff !important;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 10px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Main Content */
+        .email-body { padding: 35px 35px 25px 35px; }
+        .greeting-headline {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-top: 0;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+        }
+        .body-paragraph {
+            font-size: 15px;
+            line-height: 1.65;
+            color: #334155;
+            margin-bottom: 16px;
+        }
+        
+        /* Step-by-Step Action Cards */
+        .action-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 14px;
+        }
+        .action-card-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 4px;
+        }
+        .action-card-desc {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+            margin: 0;
+        }
+        
+        /* CTA Button */
+        .primary-cta-container { text-align: center; margin: 30px 0 25px 0; }
+        .primary-cta-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            color: #ffffff !important;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 14px 36px;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.3);
+        }
+        
+        /* SMS / Contact Notice Box */
+        .sms-notice-box {
+            background-color: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 25px;
+            font-size: 13px;
+            color: #1e40af;
+            font-weight: 500;
+        }
+        
+        /* Footer */
+        .email-footer {
+            background-color: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            padding: 25px 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+        .footer-links a { color: #2563eb; text-decoration: none; margin: 0 8px; font-weight: 600; }
+        .footer-links a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <div class="email-container">
+            
+            <!-- Top Hero Banner -->
+            <div class="hero-banner">
+                <div class="brand-logo-text">Multibiz</div>
+                <div>
+                    <span class="hero-badge">Talent & Career Intelligence</span>
+                </div>
+            </div>
+
+            <!-- Vibrant Jobstreet-style Feature Bar -->
+            <div class="feature-bar">
+                <a href="{{ site_url }}applicant/profile/" class="feature-btn">Explore Career Advice & AI Match</a>
+            </div>
+
+            <!-- Email Body Content -->
+            <div class="email-body">
+                <h1 class="greeting-headline">Welcome, it's great to have you on board</h1>
+
+                <p class="body-paragraph">
+                    Hi <strong>{{ user.first_name }}</strong>,
+                </p>
+
+                <p class="body-paragraph">
+                    We're here to guide you through every step of your search for the right job — and beyond.
+                </p>
+
+                <p class="body-paragraph">
+                    From resume tips to interview guides, AI skill matching to our career search tools, we've got all the advice and resources you need.
+                </p>
+
+                <p class="body-paragraph">
+                    Whether you're searching for a new role or ways to develop your career, we can help you reach your goals.
+                </p>
+
+                <!-- 3 Key Next Steps -->
+                <div style="margin-top: 25px; margin-bottom: 25px;">
+                    <div class="action-card">
+                        <div class="action-card-title">1. Upload & Validate Your Resume</div>
+                        <p class="action-card-desc">Our ML parser automatically extracts your competencies and calculates your live Employability Score.</p>
+                    </div>
+
+                    <div class="action-card">
+                        <div class="action-card-title">2. Take the AI Career Assessment</div>
+                        <p class="action-card-desc">Answer 5 quick questions in our AI Career Copilot to unlock tailored job recommendations with fitment metrics.</p>
+                    </div>
+
+                    <div class="action-card">
+                        <div class="action-card-title">3. Apply Directly to Verified Companies</div>
+                        <p class="action-card-desc">Browse top tech and corporate vacancies and submit tailored applications with 1-click.</p>
+                    </div>
+                </div>
+
+                <!-- Call to Action Button -->
+                <div class="primary-cta-container">
+                    <a href="{{ site_url }}applicant/profile/" class="primary-cta-btn">Complete Your Candidate Profile</a>
+                </div>
+
+                {% if user.phone %}
+                <!-- SMS Alert Confirmation Note -->
+                <div class="sms-notice-box">
+                    <strong><i class="fa-solid fa-mobile-screen"></i> SMS Confirmation Sent:</strong> We've also dispatched a welcome notification to your registered mobile number (<code>{{ user.phone }}</code>).
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Footer -->
+            <div class="email-footer">
+                <div class="footer-links" style="margin-bottom: 12px;">
+                    <a href="{{ site_url }}jobs/careers/">Find Jobs</a> |
+                    <a href="{{ site_url }}chatbot/">AI Career Copilot</a> |
+                    <a href="{{ site_url }}about/">About Multibiz</a> |
+                    <a href="{{ site_url }}services/">Support</a>
+                </div>
+                <div>
+                    &copy; {% now "Y" %} Multibiz Intelligent Talent Network. All rights reserved.<br>
+                    This is an automated system message for registered candidate <strong>{{ user.email }}</strong>.
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

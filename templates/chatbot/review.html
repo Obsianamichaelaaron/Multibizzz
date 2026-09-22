@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Chatbot Assessment Review - Multibiz{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold text-dark mb-1">AI Chatbot Assessment Logs</h3>
+            <p class="text-secondary small mb-0">Review questions answered by jobseekers during AI career guidance sessions.</p>
+        </div>
+    </div>
+
+    <!-- Answers Table -->
+    <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4 mb-4">
+        <h5 class="fw-bold text-dark mb-3">Assessment Question Log</h5>
+        <div class="table-responsive">
+            <table class="table align-middle table-hover mb-0">
+                <thead class="table-light small">
+                    <tr>
+                        <th>Applicant</th>
+                        <th>Question</th>
+                        <th>Selected Answer</th>
+                        <th>Category</th>
+                        <th>Score</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ans in answers %}
+                        <tr>
+                            <td class="fw-bold text-dark">{{ ans.applicant.user.full_name }}</td>
+                            <td class="small" style="max-width: 250px;">{{ ans.question_text }}</td>
+                            <td class="fw-semibold text-primary small">{{ ans.answer_text }}</td>
+                            <td><span class="badge bg-light text-secondary border text-capitalize">{{ ans.category }}</span></td>
+                            <td><span class="badge bg-success bg-opacity-10 text-success fw-bold">+{{ ans.score_value }}</span></td>
+                            <td class="text-muted small">{{ ans.created_at|date:"M d, Y H:i" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="6" class="text-center py-4 text-muted small">No assessment logs recorded yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

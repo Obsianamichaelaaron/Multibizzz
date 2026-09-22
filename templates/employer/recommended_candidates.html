@@ -1,0 +1,576 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}AI Talent Radar Candidate Fitment - Multibiz{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* ==========================================
+       AI TALENT RADAR ENTERPRISE FITMENT STYLES
+       ========================================== */
+    .radar-hero-banner {
+        background: linear-gradient(135deg, #0b1120 0%, #0f172a 50%, #1e3a8a 100%);
+        border-radius: var(--mb-radius-xl, 20px);
+        padding: 1.75rem 2rem;
+        color: #ffffff;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.25);
+        margin-bottom: 1.75rem;
+    }
+
+    .radar-hero-banner::before {
+        content: "";
+        position: absolute;
+        top: -60px;
+        right: -60px;
+        width: 260px;
+        height: 260px;
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(37, 99, 235, 0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .radar-hero-banner::after {
+        content: "";
+        position: absolute;
+        bottom: -50px;
+        left: 20%;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, rgba(124, 58, 237, 0.3) 0%, rgba(124, 58, 237, 0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    /* Radar Pulse Micro-Animation */
+    .radar-live-pulse {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #10b981;
+        box-shadow: 0 0 0 rgba(16, 185, 129, 0.7);
+        animation: radarPulse 2s infinite;
+        vertical-align: middle;
+    }
+
+    @keyframes radarPulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+        }
+    }
+
+    .radar-control-card {
+        background: var(--card-bg, #ffffff);
+        border: 1px solid var(--border-color, #e2e8f0);
+        border-radius: var(--mb-radius-xl, 18px);
+        padding: 1.5rem;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+        margin-bottom: 1.75rem;
+        transition: all 0.25s ease;
+    }
+
+    .radar-stat-box {
+        background: #f8fafc;
+        border: 1px solid var(--border-color, #e2e8f0);
+        border-radius: 12px;
+        padding: 1rem 0.85rem;
+        text-align: center;
+        transition: all 0.2s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .radar-stat-box:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+        transform: translateY(-2px);
+    }
+
+    [data-bs-theme="dark"] .radar-control-card {
+        background: #111827;
+        border-color: #1f2937;
+    }
+
+    [data-bs-theme="dark"] .radar-stat-box {
+        background: #1a2744;
+        border-color: #1e293b;
+    }
+
+    [data-bs-theme="dark"] .radar-stat-box:hover {
+        background: #233559;
+        border-color: #3b82f6;
+    }
+
+    /* Candidate Card */
+    .radar-candidate-card {
+        background: var(--card-bg, #ffffff);
+        border: 1px solid var(--border-color, #e2e8f0);
+        border-radius: 18px;
+        padding: 1.5rem;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+        position: relative;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    }
+
+    .radar-candidate-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 28px rgba(15, 23, 42, 0.09);
+        border-color: #93c5fd;
+    }
+
+    /* Top Match Highlight Card */
+    .radar-top-match-card {
+        border: 2px solid #f59e0b !important;
+        background: linear-gradient(180deg, rgba(254, 243, 199, 0.15) 0%, rgba(255, 255, 255, 1) 100%);
+        box-shadow: 0 8px 24px rgba(245, 158, 11, 0.15) !important;
+    }
+
+    .radar-top-match-card:hover {
+        box-shadow: 0 16px 32px rgba(245, 158, 11, 0.22) !important;
+        border-color: #d97706 !important;
+    }
+
+    .top-match-ribbon {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        color: #ffffff;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        padding: 0.25rem 0.65rem;
+        border-radius: 9999px;
+        box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
+    }
+
+    [data-bs-theme="dark"] .radar-candidate-card {
+        background: #111827;
+        border-color: #1f2937;
+    }
+
+    [data-bs-theme="dark"] .radar-top-match-card {
+        background: linear-gradient(180deg, rgba(245, 158, 11, 0.1) 0%, #111827 100%);
+        border-color: #f59e0b !important;
+    }
+
+    [data-bs-theme="dark"] .radar-candidate-card:hover {
+        border-color: #3b82f6;
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .candidate-avatar-circle {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #dbeafe, #eff6ff);
+        color: #1d4ed8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.2rem;
+        border: 2px solid #bfdbfe;
+        flex-shrink: 0;
+    }
+
+    [data-bs-theme="dark"] .candidate-avatar-circle {
+        background: linear-gradient(135deg, #1e293b, #0f172a);
+        color: #60a5fa;
+        border-color: #334155;
+    }
+
+    .fitment-meter-container {
+        background: #f8fafc;
+        border: 1px solid var(--border-color, #e2e8f0);
+        border-radius: 12px;
+        padding: 0.85rem 1rem;
+        margin-bottom: 1rem;
+    }
+
+    [data-bs-theme="dark"] .fitment-meter-container {
+        background: #1a2744;
+        border-color: #1e293b;
+    }
+
+    .fitment-bar-track {
+        height: 8px;
+        border-radius: 9999px;
+        background: #e2e8f0;
+        overflow: hidden;
+        margin-top: 0.45rem;
+    }
+
+    [data-bs-theme="dark"] .fitment-bar-track {
+        background: #0f172a;
+    }
+
+    .fitment-bar-fill {
+        height: 100%;
+        border-radius: 9999px;
+        transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .metrics-pill-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.6rem;
+        margin-bottom: 1rem;
+    }
+
+    .metric-pill-item {
+        background: #f8fafc;
+        border: 1px solid var(--border-color, #e2e8f0);
+        border-radius: 10px;
+        padding: 0.55rem 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.82rem;
+    }
+
+    [data-bs-theme="dark"] .metric-pill-item {
+        background: #1a2744;
+        border-color: #1e293b;
+    }
+
+    /* Match Score Badges */
+    .badge-match-excellent {
+        background: #ecfdf5 !important;
+        color: #065f46 !important;
+        border: 1px solid #6ee7b7 !important;
+    }
+
+    .badge-match-good {
+        background: #eff6ff !important;
+        color: #1e40af !important;
+        border: 1px solid #93c5fd !important;
+    }
+
+    .badge-match-average {
+        background: #fffbeb !important;
+        color: #92400e !important;
+        border: 1px solid #fcd34d !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Hero Header Banner -->
+    <div class="radar-hero-banner">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 position-relative" style="z-index: 1;">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1 small text-white-50">
+                        <li class="breadcrumb-item"><a href="{% url 'employer_dashboard' %}" class="text-white-50 text-decoration-none">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'employer_candidates' %}" class="text-white-50 text-decoration-none">Candidates</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">AI Talent Radar</li>
+                    </ol>
+                </nav>
+                <div class="d-flex flex-wrap align-items-center gap-2 mt-1">
+                    <h3 class="fw-extrabold text-white mb-0">
+                        <i class="fa-solid fa-wand-magic-sparkles text-warning me-2"></i>AI Talent Radar Fitment Matrix
+                    </h3>
+                    <span class="badge bg-primary bg-opacity-25 text-white border border-primary border-opacity-50 rounded-pill px-2.5 py-1 small fw-semibold">
+                        <span class="radar-live-pulse me-1"></span> Live Fitment Engine
+                    </span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                <a href="{% url 'employer_candidates' %}" class="btn btn-outline-light btn-sm px-3 shadow-sm">
+                    <i class="fa-solid fa-users me-1"></i> Candidate Pipeline
+                </a>
+                <a href="{% url 'employer_post_job' %}" class="btn btn-primary-custom btn-sm px-3 shadow-sm">
+                    <i class="fa-solid fa-plus me-1"></i> Post Vacancy
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Job Selector and Fitment Metrics Bar -->
+    <div class="radar-control-card">
+        <form method="GET" action="{% url 'recommended_candidates' %}" id="talentRadarForm">
+            <div class="row g-3 align-items-center">
+                <div class="col-lg-7">
+                    <label class="form-label fw-bold small text-dark mb-1 d-flex align-items-center gap-1">
+                        <i class="fa-solid fa-briefcase text-primary"></i> Target Job Opening to Measure Fitment:
+                    </label>
+                    <select name="job_id" class="form-select bg-light border shadow-xs fw-semibold py-2" onchange="this.form.submit()">
+                        {% for j in active_jobs %}
+                            <option value="{{ j.id }}" {% if selected_job.id == j.id %}selected{% endif %}>
+                                {{ j.title }} - {{ j.location }} ({{ j.get_employment_type_display }})
+                            </option>
+                        {% empty %}
+                            <option>No active job postings available.</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-5">
+                    <label class="form-label fw-bold small text-dark mb-1 d-flex align-items-center gap-1">
+                        <i class="fa-solid fa-magnifying-glass text-info"></i> Instant Candidate Filter:
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border text-muted"><i class="fa-solid fa-filter small"></i></span>
+                        <input type="text" id="candidateSearchInput" class="form-control bg-light border shadow-xs py-2" placeholder="Search candidate by name, skills (e.g. Python, SQL)...">
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        {% if selected_job %}
+            <!-- Fitment Analytics Metrics -->
+            <div class="row g-3 mt-2 pt-3 border-top">
+                <div class="col-6 col-md-3">
+                    <div class="radar-stat-box">
+                        <div class="text-muted small fw-semibold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.5px;">Matched Talent</div>
+                        <div class="fw-extrabold fs-4 text-dark mt-1">{{ total_matches }} <span class="small fw-normal text-muted" style="font-size: 0.75rem;">Candidates</span></div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="radar-stat-box">
+                        <div class="text-muted small fw-semibold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.5px;">High Fit (≥80%)</div>
+                        <div class="fw-extrabold fs-4 text-success mt-1">{{ high_match_count }} <span class="small fw-normal text-muted" style="font-size: 0.75rem;">Profiles</span></div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="radar-stat-box">
+                        <div class="text-muted small fw-semibold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.5px;">Average Fit Score</div>
+                        <div class="fw-extrabold fs-4 text-primary mt-1">{{ avg_score }}%</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="radar-stat-box">
+                        <div class="text-muted small fw-semibold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.5px;">Target Requirements</div>
+                        <div class="fw-bold small text-truncate text-secondary mt-1" title="{{ selected_job.skills_required|default:'General Competencies' }}">
+                            {{ selected_job.skills_required|default:"General Skills" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if selected_job %}
+        {% if recommendations %}
+            <!-- Candidates Fitment Grid -->
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4" id="candidateCardsGrid">
+                {% for rec in recommendations %}
+                    <div class="col candidate-card-item" data-search-text="{{ rec.applicant.user.full_name|lower }} {% for s in rec.applicant.get_skills_list %}{{ s|lower }} {% endfor %} {{ rec.applicant.qualifications|lower }}">
+                        <div class="radar-candidate-card {% if rec.is_top_match %}radar-top-match-card{% endif %}">
+                            <div>
+                                <!-- Header: Top Match Ribbon (if rank 1) -->
+                                {% if rec.is_top_match %}
+                                    <div class="d-flex justify-content-between align-items-center mb-2.5">
+                                        <span class="top-match-ribbon">
+                                            <i class="fa-solid fa-crown text-white"></i> #1 Top Match
+                                        </span>
+                                        <span class="badge bg-warning bg-opacity-10 text-dark border border-warning border-opacity-25 rounded-pill px-2 py-0.5 small fw-bold" style="font-size: 0.7rem;">
+                                            Rank #{{ rec.radar_rank }}
+                                        </span>
+                                    </div>
+                                {% else %}
+                                    <div class="d-flex justify-content-end mb-1">
+                                        <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-2 py-0.5 small" style="font-size: 0.7rem;">
+                                            Rank #{{ rec.radar_rank }}
+                                        </span>
+                                    </div>
+                                {% endif %}
+
+                                <!-- Avatar, Name, and Fit Badge -->
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="position-relative">
+                                            {% if rec.applicant.profile_pic %}
+                                                <img src="{{ rec.applicant.profile_pic.url }}" class="rounded-circle shadow-xs" style="width: 52px; height: 52px; object-fit: cover;" alt="{{ rec.applicant.user.full_name }}">
+                                            {% else %}
+                                                <div class="candidate-avatar-circle shadow-xs">
+                                                    {{ rec.applicant.user.first_name|slice:":1"|upper }}{{ rec.applicant.user.last_name|slice:":1"|upper }}
+                                                </div>
+                                            {% endif %}
+                                            <span class="position-absolute bg-success border border-2 border-white rounded-circle" style="width: 12px; height: 12px; bottom: 0px; right: 0px;" title="Verified Applicant"></span>
+                                        </div>
+                                        <div>
+                                            <a href="{% url 'employer_candidate_detail' rec.application.id %}" class="fw-bold text-dark text-decoration-none hover-primary mb-0 text-truncate d-block" style="max-width: 170px;" title="{{ rec.applicant.user.full_name }}">
+                                                {{ rec.applicant.user.full_name }}
+                                            </a>
+                                            <div class="text-muted small" style="font-size: 0.75rem;">
+                                                <i class="fa-solid fa-graduation-cap text-info me-1"></i>{{ rec.applicant.education_level|default:"Degree Graduate"|truncatewords:3 }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <span class="badge {{ rec.fit_badge }} rounded-pill px-2.5 py-1 shadow-xs fw-bold" style="font-size: 0.8rem;">
+                                        <i class="fa-solid fa-bolt me-1 text-warning"></i> {{ rec.match_score }}%
+                                    </span>
+                                </div>
+
+                                <!-- Dedicated Fitment Meter Block -->
+                                <div class="fitment-meter-container">
+                                    <div class="d-flex justify-content-between align-items-center small">
+                                        <span class="text-muted fw-semibold" style="font-size: 0.75rem;">AI Match Fitment</span>
+                                        <span class="fw-bold text-dark" style="font-size: 0.75rem;">{{ rec.fit_level }} ({{ rec.match_score }}%)</span>
+                                    </div>
+                                    <div class="fitment-bar-track">
+                                        <div class="fitment-bar-fill {% if rec.match_score >= 80 %}bg-success{% elif rec.match_score >= 60 %}bg-primary{% else %}bg-warning{% endif %}" 
+                                            role="progressbar"
+                                            data-score="{{ rec.match_score }}"
+                                             aria-valuenow="{{ rec.match_score }}" 
+                                             aria-valuemin="0" 
+                                             aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Core Metrics Snapshot -->
+                                <div class="metrics-pill-grid">
+                                    <div class="metric-pill-item">
+                                        <span class="text-muted"><i class="fa-solid fa-briefcase text-primary me-1"></i> Experience</span>
+                                        <strong class="text-dark">{{ rec.applicant.experience_years }} Yr{% if rec.applicant.experience_years != 1 %}s{% endif %}</strong>
+                                    </div>
+                                    <div class="metric-pill-item">
+                                        <span class="text-muted"><i class="fa-solid fa-chart-line text-success me-1"></i> Readiness</span>
+                                        <strong class="text-dark">{{ rec.applicant.employability_score }}%</strong>
+                                    </div>
+                                </div>
+
+                                <!-- Matched Required Skills -->
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-1.5">
+                                        <span class="fw-bold text-dark small" style="font-size: 0.75rem;">Matched Role Skills:</span>
+                                        <span class="badge bg-success bg-opacity-10 text-success rounded-pill" style="font-size: 0.65rem;">{{ rec.matched_skills|length }} Matched</span>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-1.5">
+                                        {% for s in rec.matched_skills %}
+                                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill fw-medium py-1 px-2.5" style="font-size: 0.73rem;">
+                                                <i class="fa-solid fa-check me-1" style="font-size: 0.65rem;"></i>{{ s }}
+                                            </span>
+                                        {% empty %}
+                                            <span class="text-muted small" style="font-size: 0.72rem;">No direct target skills identified</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <!-- Other Skills / Strengths -->
+                                {% if rec.other_skills %}
+                                    <div class="mb-3">
+                                        <div class="text-muted small fw-semibold mb-1" style="font-size: 0.72rem;">Additional Capabilities:</div>
+                                        <div class="d-flex flex-wrap gap-1">
+                                            {% for s in rec.other_skills %}
+                                                <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill fw-normal py-1 px-2" style="font-size: 0.7rem;">{{ s }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Card Action Footer -->
+                            <div class="border-top pt-3 mt-2 d-flex justify-content-between align-items-center">
+                                <div class="text-muted small" style="font-size: 0.75rem;">
+                                    {% if rec.applicant.resume_file %}
+                                        <a href="{% url 'view_candidate_resume' rec.application.id %}" target="_blank" rel="noopener" class="text-success text-decoration-none fw-semibold" title="View candidate resume">
+                                            <i class="fa-solid fa-file-lines me-1"></i>View Resume
+                                        </a>
+                                    {% else %}
+                                        <span><i class="fa-solid fa-circle-check text-primary me-1"></i>Verified</span>
+                                    {% endif %}
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <a href="{% url 'chat_thread' rec.applicant.user.id %}" class="btn btn-sm btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center border" style="width: 34px; height: 34px;" title="Direct Message Candidate">
+                                        <i class="fa-regular fa-comment-dots text-secondary"></i>
+                                    </a>
+                                    <a href="{% url 'employer_candidate_detail' rec.application.id %}" class="btn btn-sm btn-primary-custom rounded-pill px-3 py-1 shadow-xs fw-semibold d-inline-flex align-items-center gap-1.5" style="font-size: 0.8rem; height: 34px;">
+                                        <i class="fa-solid fa-user-check" style="font-size: 0.75rem;"></i> Review Dossier
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Centered Full-Width Empty State -->
+            <div class="radar-control-card p-5 text-center my-3">
+                <div class="mb-3">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle shadow-xs" style="width: 76px; height: 76px;">
+                        <i class="fa-solid fa-users-viewfinder fs-2"></i>
+                    </div>
+                </div>
+                <h5 class="fw-bold text-dark mb-2">No Candidates Matched Fitment Threshold</h5>
+                <p class="text-secondary small mb-4 mx-auto" style="max-width: 520px;">
+                    No candidates on the platform currently meet the minimum qualification requirements or have been dispatched for <strong class="text-dark">{{ selected_job.title }}</strong>.
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-2">
+                    <a href="{% url 'employer_post_job' %}" class="btn btn-primary-custom btn-sm px-3.5 py-2 shadow-sm">
+                        <i class="fa-solid fa-plus me-1"></i> Post New Job Opening
+                    </a>
+                    <a href="{% url 'employer_request_talent' %}" class="btn btn-outline-primary btn-sm px-3.5 py-2 shadow-sm">
+                        <i class="fa-solid fa-file-signature me-1"></i> Request Talent from Multibiz
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        <!-- No Active Job Openings State -->
+        <div class="radar-control-card p-5 text-center py-5">
+            <div class="mb-3">
+                <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle shadow-xs" style="width: 76px; height: 76px;">
+                    <i class="fa-solid fa-briefcase fs-2"></i>
+                </div>
+            </div>
+            <h5 class="fw-bold text-dark mb-2">No Active Job Openings Found</h5>
+            <p class="text-secondary small mb-4 mx-auto" style="max-width: 480px;">To run the AI Talent Radar and match platform candidates, create an active job posting first.</p>
+            <a href="{% url 'employer_post_job' %}" class="btn btn-primary-custom px-4 py-2 shadow-sm">
+                <i class="fa-solid fa-plus-circle me-1"></i> Post Your First Vacancy
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Live Client-side Search Filter Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('candidateSearchInput');
+    const cards = document.querySelectorAll('.candidate-card-item');
+
+    document.querySelectorAll('.fitment-bar-fill[data-score]').forEach(function(bar) {
+        const score = Number.parseFloat(bar.dataset.score);
+        if (!Number.isNaN(score)) {
+            bar.style.width = `${Math.max(0, Math.min(100, score))}%`;
+        }
+    });
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            cards.forEach(card => {
+                const searchData = card.getAttribute('data-search-text') || '';
+                if (searchData.includes(query)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    }
+});
+</script>
+{% endblock %}
+
+

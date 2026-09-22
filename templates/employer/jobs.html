@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Company Jobs - Multibiz{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Top Hero Header Banner (Dark Enterprise Palette) -->
+    <div class="employer-hero-banner">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 position-relative" style="z-index: 1;">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1 small text-white-50">
+                        <li class="breadcrumb-item"><a href="{% url 'employer_dashboard' %}" class="text-white-50 text-decoration-none">Dashboard</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">Company Jobs</li>
+                    </ol>
+                </nav>
+                <div class="d-flex align-items-center gap-2 mt-1">
+                    <h3 class="fw-extrabold text-white mb-0">
+                        <i class="fa-solid fa-briefcase text-info me-2"></i>Company Jobs
+                    </h3>
+                    <span class="badge bg-primary bg-opacity-25 text-white border border-primary border-opacity-50 rounded-pill px-2.5 py-1 small fw-semibold">
+                        <i class="fa-solid fa-layer-group me-1 text-warning"></i> {{ jobs|length }} Total Openings
+                    </span>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <a href="{% url 'employer_talent_requests' %}" class="btn btn-outline-light btn-sm px-3 py-2 shadow-sm">
+                    <i class="fa-solid fa-clipboard-list text-warning me-1"></i> Talent Requests
+                </a>
+                <a href="{% url 'recommended_candidates' %}" class="btn btn-outline-light btn-sm px-3 py-2 shadow-sm">
+                    <i class="fa-solid fa-wand-magic-sparkles text-warning me-1"></i> AI Talent Radar
+                </a>
+                <a href="{% url 'employer_request_talent' %}" class="btn btn-primary-custom btn-sm px-3 shadow-sm">
+                    <i class="fa-solid fa-plus-circle me-1"></i> Request Talent
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jobs Table Card -->
+    <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4">
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+            <h5 class="fw-bold text-dark mb-0">
+                <i class="fa-solid fa-list-check text-primary me-2"></i>Published Positions Directory
+            </h5>
+            <span class="text-muted small">Showing {{ jobs|length }} position{% if jobs|length != 1 %}s{% endif %}</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table align-middle table-hover mb-0">
+                <thead class="table-light small">
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Type & Location</th>
+                        <th>Candidate Pool</th>
+                        <th>Status</th>
+                        <th>Posted Date</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in jobs %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'job_detail_public' job.pk %}" class="fw-bold text-dark text-decoration-none hover-primary">
+                                    {{ job.title }}
+                                </a>
+                            </td>
+                            <td>
+                                <div class="fw-medium text-dark">{{ job.get_employment_type_display }}</div>
+                                <div class="text-muted small"><i class="fa-solid fa-location-dot text-danger me-1" style="font-size: 0.75rem;"></i>{{ job.location }}</div>
+                            </td>
+                            <td>
+                                <a href="{% url 'employer_candidates' %}?job_id={{ job.id }}" class="badge bg-primary bg-opacity-10 text-primary px-3 py-1.5 rounded-pill text-decoration-none fw-bold shadow-xs">
+                                    <i class="fa-solid fa-users me-1"></i> {{ job.applicant_count }} Candidates
+                                </a>
+                            </td>
+                            <td>
+                                <span class="badge {% if job.status == 'active' %}bg-success bg-opacity-10 text-success border border-success border-opacity-25{% elif job.status == 'draft' %}bg-warning bg-opacity-10 text-dark border border-warning border-opacity-25{% else %}bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25{% endif %} text-capitalize px-3 py-1 rounded-pill fw-semibold">
+                                    {{ job.status }}
+                                </span>
+                            </td>
+                            <td class="text-muted small">{{ job.posted_at|date:"M d, Y" }}</td>
+                            <td class="text-end">
+                                <div class="d-inline-flex gap-1.5">
+                                    <a href="{% url 'employer_candidates' %}?job_id={{ job.id }}" class="btn btn-sm btn-outline-primary px-2.5 py-1" style="font-size: 0.8rem;" title="View Pipeline">
+                                        <i class="fa-solid fa-users me-1"></i> Pipeline
+                                    </a>
+                                    <a href="{% url 'employer_edit_job' job.pk %}" class="btn btn-sm btn-outline-secondary px-2.5 py-1" style="font-size: 0.8rem;" title="Edit Job">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                    <a href="{% url 'employer_delete_job' job.pk %}" onclick="return confirm('Are you sure you want to delete this job posting?');" class="btn btn-sm btn-outline-danger px-2.5 py-1" style="font-size: 0.8rem;" title="Delete Job">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="fa-solid fa-briefcase fs-1 mb-3 text-primary opacity-50"></i>
+                                <h5 class="fw-bold text-dark">No job postings created yet</h5>
+                                <p class="text-secondary small mb-3">Create and publish positions to start receiving candidate applications.</p>
+                                <a href="{% url 'employer_post_job' %}" class="btn btn-primary-custom btn-sm px-4">
+                                    <i class="fa-solid fa-plus me-1"></i> Post Your First Vacancy
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

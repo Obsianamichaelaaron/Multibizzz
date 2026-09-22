@@ -1,0 +1,12 @@
+Welcome to Multibiz Talent Solutions, {{ user.first_name }}!
+
+Thank you for registering {{ company_name }} with Multibiz. We are excited to partner with your hiring team.
+
+Getting Started:
+1. Complete company profile: {{ site_url }}employer/profile/
+2. Post your open job vacancies: {{ site_url }}employer/post-job/
+3. Access AI Candidate Radar: {{ site_url }}employer/candidates/
+
+Best regards,
+The Multibiz Enterprise Team
+{{ site_url }}

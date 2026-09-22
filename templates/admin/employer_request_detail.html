@@ -1,0 +1,318 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Talent Request #{{ talent_request.id }} Review - Multibiz Admin{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="employer-hero-banner mb-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 position-relative" style="z-index: 1;">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-1 small text-white-50">
+                        <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}" class="text-white-50 text-decoration-none">Admin</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'admin_employer_requests' %}" class="text-white-50 text-decoration-none">Employer Requests</a></li>
+                        <li class="breadcrumb-item active text-white" aria-current="page">#{{ talent_request.id }}</li>
+                    </ol>
+                </nav>
+                <div class="d-flex align-items-center gap-2 mt-1">
+                    <h3 class="fw-extrabold text-white mb-0">
+                        <i class="fa-solid fa-file-signature text-warning me-2"></i>Talent Request #{{ talent_request.id }}: {{ talent_request.title }}
+                    </h3>
+                    <span class="badge bg-danger bg-opacity-25 text-white border border-danger border-opacity-50 rounded-pill px-2.5 py-1 small fw-semibold">
+                        Admin Evaluation
+                    </span>
+                </div>
+                <p class="text-white-50 small mb-0 mt-2">
+                    Submitted by <strong>{{ talent_request.employer.display_name }}</strong> on {{ talent_request.created_at|date:"F d, Y at h:i A" }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Strip / Summary Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="custom-card p-3 bg-white border-0 shadow-sm rounded-4 h-100">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-primary bg-opacity-10 p-3 text-primary d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                        <i class="fa-solid fa-signal"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Current Stage</div>
+                        <div class="fw-bold">
+                            {% if talent_request.status == 'submitted' %}
+                                <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-2.5 py-1">Submitted</span>
+                            {% elif talent_request.status == 'under_admin_review' %}
+                                <span class="badge bg-warning bg-opacity-10 text-dark rounded-pill px-2.5 py-1">In Review</span>
+                            {% elif talent_request.status == 'approved' %}
+                                <span class="badge bg-info bg-opacity-10 text-info rounded-pill px-2.5 py-1">Approved</span>
+                            {% elif talent_request.status == 'job_posted' %}
+                                <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-2.5 py-1">Job Published</span>
+                            {% elif talent_request.status == 'candidates_sent' %}
+                                <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-2.5 py-1 fw-bold">Candidates Sent</span>
+                            {% elif talent_request.status == 'completed' %}
+                                <span class="badge bg-success text-white rounded-pill px-2.5 py-1">Completed</span>
+                            {% elif talent_request.status == 'rejected' %}
+                                <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2.5 py-1">Rejected</span>
+                            {% else %}
+                                <span class="badge bg-light text-dark rounded-pill px-2.5 py-1">{{ talent_request.get_status_display }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="custom-card p-3 bg-white border-0 shadow-sm rounded-4 h-100">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-info bg-opacity-10 p-3 text-info d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Total Applicants</div>
+                        <div class="fs-4 fw-bold text-dark">{{ talent_request.total_applicants_count }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="custom-card p-3 bg-white border-0 shadow-sm rounded-4 h-100">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-warning bg-opacity-10 p-3 text-warning d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Qualified Candidates</div>
+                        <div class="fs-4 fw-bold text-dark">{{ talent_request.qualified_candidates_count }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="custom-card p-3 bg-white border-0 shadow-sm rounded-4 h-100">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-success bg-opacity-10 p-3 text-success d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small">Sent to Employer</div>
+                        <div class="fs-4 fw-bold text-dark">{{ talent_request.sent_candidates_count }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Main Details Column -->
+        <div class="col-lg-8">
+            <!-- Job Requirements Card -->
+            <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                    <h5 class="fw-bold mb-0 text-dark">
+                        <i class="fa-solid fa-list-check text-primary me-2"></i>Position & Requirements Specification
+                    </h5>
+                    <span class="badge bg-light text-secondary border">Target Vacancies: {{ talent_request.vacancies_count }}</span>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6">
+                        <div class="text-muted small">Job Title / Role</div>
+                        <div class="fw-bold text-dark fs-6">{{ talent_request.title }}</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-muted small">Department / Division</div>
+                        <div class="fw-bold text-dark">{{ talent_request.department|default:"General / Not Specified" }}</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-muted small">Employment Type</div>
+                        <div class="fw-bold text-dark">{{ talent_request.get_employment_type_display }}</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-muted small">Location / Work Arrangement</div>
+                        <div class="fw-bold text-dark"><i class="fa-solid fa-location-dot text-danger me-1"></i>{{ talent_request.location }}</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-muted small">Budget / Salary Range</div>
+                        <div class="fw-bold text-success">{{ talent_request.salary_range|default:"Negotiable / Competitive" }}</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-muted small">Required Experience</div>
+                        <div class="fw-bold text-dark">{{ talent_request.experience_required }}</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-muted small">Minimum Education</div>
+                        <div class="fw-bold text-dark">{{ talent_request.education_level|default:"Not specified" }}</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-muted small">Required Certifications</div>
+                        <div class="fw-bold text-dark">{{ talent_request.certifications|default:"None specified" }}</div>
+                    </div>
+                </div>
+
+                <!-- Skills Required -->
+                <div class="mb-4">
+                    <label class="fw-bold text-dark small mb-2 d-block">Required Skills & Technologies (Used by Evaluation Engine)</label>
+                    <div class="p-3 bg-light rounded-3 border">
+                        <div class="d-flex flex-wrap gap-1.5">
+                            {% for skill in talent_request.get_skills_list %}
+                                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-2.5 py-1.5 fw-semibold">
+                                    <i class="fa-solid fa-check me-1"></i>{{ skill }}
+                                </span>
+                            {% empty %}
+                                <span class="text-muted small">No specific skills parsed.</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Description -->
+                <div class="mb-4">
+                    <label class="fw-bold text-dark small mb-2 d-block">Role Description & Responsibilities</label>
+                    <div class="p-3 bg-light rounded-3 border" style="white-space: pre-line; font-size: 0.95rem; line-height: 1.6;">
+                        {{ talent_request.description }}
+                    </div>
+                </div>
+
+                {% if talent_request.other_requirements %}
+                <div class="mb-3">
+                    <label class="fw-bold text-dark small mb-2 d-block">Additional Candidate Requirements / Notes</label>
+                    <div class="p-3 bg-light rounded-3 border" style="white-space: pre-line; font-size: 0.95rem; line-height: 1.6;">
+                        {{ talent_request.other_requirements }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Linked Live Job Opening (if published) -->
+            {% if linked_job %}
+            <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4 mb-4 border-start border-primary border-4">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+                    <div>
+                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 mb-1">
+                            <i class="fa-solid fa-globe me-1"></i> Published Job Opening Active
+                        </span>
+                        <h5 class="fw-bold text-dark mb-0">{{ linked_job.title }}</h5>
+                        <p class="text-muted small mb-0">Posted on {{ linked_job.posted_at|date:"M d, Y" }} &bull; Status: <strong>{{ linked_job.status|upper }}</strong></p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'admin_job_candidates' linked_job.id %}" class="btn btn-primary px-3 shadow-sm">
+                            <i class="fa-solid fa-users-viewfinder me-1"></i> Candidates & Talent Radar
+                        </a>
+                        <a href="{% url 'admin_edit_job' linked_job.id %}" class="btn btn-outline-secondary px-3">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar Actions & Employer Info -->
+        <div class="col-lg-4">
+            <!-- Admin Workflow Action Box -->
+            <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4 mb-4">
+                <h6 class="fw-bold text-dark mb-3">
+                    <i class="fa-solid fa-sliders text-danger me-2"></i>Admin Decision & Actions
+                </h6>
+
+                {% if not linked_job %}
+                <form method="POST" action="{% url 'admin_employer_request_detail' talent_request.id %}">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-dark">Admin Internal Notes / Feedback to Employer</label>
+                        <textarea name="admin_notes" rows="3" class="form-control form-control-sm" placeholder="Add instructions, requirement feedback, or approval notes...">{{ talent_request.admin_notes }}</textarea>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" name="action" value="approve" class="btn btn-success fw-bold py-2 shadow-sm">
+                            <i class="fa-solid fa-check-circle me-1"></i> Approve & Create Job Opening
+                        </button>
+                        <button type="submit" name="action" value="request_changes" class="btn btn-outline-warning text-dark py-2">
+                            <i class="fa-solid fa-rotate-left me-1"></i> Request Changes from Employer
+                        </button>
+                        <button type="submit" name="action" value="reject" onclick="return confirm('Are you sure you want to reject this hiring request?');" class="btn btn-outline-danger py-2">
+                            <i class="fa-solid fa-circle-xmark me-1"></i> Reject Request
+                        </button>
+                    </div>
+                </form>
+                {% else %}
+                <div class="alert alert-success d-flex align-items-center gap-2 mb-3">
+                    <i class="fa-solid fa-circle-check fs-5"></i>
+                    <div>
+                        <div class="fw-bold">Job Live & Receiving Applicants</div>
+                        <div class="small">Admin job posting connected. Candidate evaluation active.</div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <a href="{% url 'admin_job_candidates' linked_job.id %}" class="btn btn-primary py-2.5 fw-bold shadow-sm">
+                        <i class="fa-solid fa-radar me-1"></i> Manage Candidates & Dispatch
+                    </a>
+                    {% if latest_export and latest_export.google_drive_view_link %}
+                    <a href="{{ latest_export.google_drive_view_link }}" target="_blank" class="btn btn-success py-2 fw-bold shadow-sm">
+                        <i class="fa-brands fa-google-drive me-1"></i> Open Latest Export in Drive
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'job_detail_public' linked_job.id %}" target="_blank" class="btn btn-outline-secondary py-2">
+                        <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> View Public Job Page
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Employer Details Card -->
+            <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4 mb-4">
+                <h6 class="fw-bold text-dark mb-3">
+                    <i class="fa-solid fa-building text-primary me-2"></i>Employer Profile
+                </h6>
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="rounded-circle bg-light border p-2 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                        <i class="fa-solid fa-building-user text-primary fs-5"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold text-dark">{{ talent_request.employer.display_name }}</div>
+                        <div class="text-muted small">{{ talent_request.employer.company_industry|default:"Corporate" }}</div>
+                    </div>
+                </div>
+
+                <ul class="list-unstyled small mb-0 text-secondary">
+                    <li class="mb-2">
+                        <i class="fa-solid fa-envelope text-muted me-2"></i>{{ talent_request.employer.user.email }}
+                    </li>
+                    <li class="mb-2">
+                        <i class="fa-solid fa-phone text-muted me-2"></i>{{ talent_request.employer.user.phone|default:"Not specified" }}
+                    </li>
+                    <li class="mb-2">
+                        <i class="fa-solid fa-location-dot text-muted me-2"></i>{{ talent_request.employer.company_address|default:talent_request.location }}
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Request History & Metadata -->
+            <div class="custom-card p-4 bg-white border-0 shadow-sm rounded-4">
+                <h6 class="fw-bold text-dark mb-3">
+                    <i class="fa-solid fa-clock-rotate-left text-muted me-2"></i>Activity Metadata
+                </h6>
+                <ul class="list-unstyled small mb-0 text-muted">
+                    <li class="mb-2 d-flex justify-content-between">
+                        <span>Created:</span>
+                        <strong class="text-dark">{{ talent_request.created_at|date:"M d, Y" }}</strong>
+                    </li>
+                    <li class="mb-2 d-flex justify-content-between">
+                        <span>Last Updated:</span>
+                        <strong class="text-dark">{{ talent_request.updated_at|date:"M d, Y" }}</strong>
+                    </li>
+                    <li class="d-flex justify-content-between">
+                        <span>Request ID:</span>
+                        <strong class="text-dark">#{{ talent_request.id }}</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

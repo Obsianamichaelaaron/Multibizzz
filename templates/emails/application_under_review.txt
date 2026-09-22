@@ -1,0 +1,16 @@
+Hello, {{ user.first_name }}!
+
+We have evaluated your qualifications for the role below. Your application is under review.
+
+Position / Job Title: {{ application.job.title }}
+Company / Employer: {{ application.job.company_name }}
+Application Date: {{ application.applied_at|date:"F d, Y" }}
+Current Status: Under Review
+
+Our recruitment team has determined that your background meets the required criteria for this position. Your profile has been queued for hiring team review and employer submission.
+
+View your application pipeline at:
+{{ site_url }}applications/my-applications/
+
+Thank you for choosing Multibiz.
+Multibiz Recruitment & Talent Intelligence

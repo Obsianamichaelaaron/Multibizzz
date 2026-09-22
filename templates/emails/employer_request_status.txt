@@ -1,0 +1,14 @@
+Hello, {{ employer_name }}!
+
+The status of your hiring request has been updated by the Admin team:
+
+Request ID: #{{ employer_request.id }}
+Position / Role: {{ employer_request.title }}
+Status: {{ employer_request.get_status_display }}
+{% if employer_request.admin_notes %}Admin Remarks: {{ employer_request.admin_notes }}{% endif %}
+
+View request details at:
+{{ site_url }}jobs/employer/talent-requests/{{ employer_request.id }}/
+
+Thank you,
+Multibiz Talent Solutions

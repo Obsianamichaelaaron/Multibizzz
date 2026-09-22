@@ -1,0 +1,25 @@
+Hello, {{ user.first_name }}!
+
+Thank you for your interest in the {{ application.job.title }} position at {{ application.job.company_name }}.
+
+After reviewing your profile against the position's prerequisites, your application status is: {{ status_display }} ({{ application.match_score|floatformat:0 }}% Match).
+{% if qualification_reason %}Evaluation Note: {{ qualification_reason }}{% endif %}
+
+We encourage you to explore other career opportunities on Multibiz that match your background and experience.
+
+{% if recommended_jobs %}
+Recommended Positions Matching Your Profile:
+{% for rec in recommended_jobs %}
+--------------------------------------------------
+* {{ rec.job.title }} @ {{ rec.job.company_name }}
+  Location: {{ rec.job.location }} ({{ rec.job.get_employment_type_display }})
+  Why it matches: {{ rec.match_reason|striptags }}
+  Apply link: {{ site_url }}applications/apply/{{ rec.job.id }}/
+{% endfor %}
+{% endif %}
+
+Browse all active openings at:
+{{ site_url }}jobs/careers/
+
+Thank you,
+Multibiz Recruitment & Talent Intelligence

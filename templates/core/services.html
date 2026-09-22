@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Services & Platform Suite - Multibiz{% endblock %}
+
+{% block content %}
+<!-- =========================================================================
+     1. HERO HEADER WITH MESH GRADIENT
+     ========================================================================= -->
+<section class="hero-mesh-bg text-white py-5 py-lg-6">
+    <div class="container py-4 position-relative" style="z-index: 2;">
+        <div class="text-center max-w-800 mx-auto animate-slide-up" style="max-width: 780px;">
+            <span
+                class="badge bg-primary bg-opacity-25 text-info px-3 py-2 rounded-pill fw-semibold mb-3 border border-info border-opacity-25 shadow-sm">
+                <i class="fa-solid fa-cubes me-1 text-warning"></i> End-to-End Recruitment Suite
+            </span>
+            <h1 class="display-4 fw-extrabold text-white mb-3" style="letter-spacing: -1px;">
+                Intelligent Services for Talent & Hiring Teams
+            </h1>
+            <p class="lead text-light text-opacity-75 mb-4" style="font-size: 1.1rem; line-height: 1.7;">
+                From automated resume text extraction and multi-factor ranking algorithms to integrated interview
+                scheduling and career copilot guidance.
+            </p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'careers' %}" class="btn btn-primary-custom px-4 py-2 shadow">
+                    <i class="fa-solid fa-magnifying-glass me-1"></i> Browse Openings
+                </a>
+                <a href="{% url 'register' %}?tab=employer" class="btn btn-outline-light rounded-pill px-4 py-2">
+                    <i class="fa-solid fa-building me-1"></i> Post Open Roles
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     2. SIX CORE PLATFORM SERVICES (3x2 GRID)
+     ========================================================================= -->
+<section class="py-5 py-lg-6" style="background-color: var(--surface-bg);">
+    <div class="container">
+        <div class="text-center max-w-700 mx-auto mb-5">
+            <span
+                class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold mb-2">Capabilities</span>
+            <h2 class="fw-bold fs-1 text-dark">Comprehensive Recruitment Infrastructure</h2>
+            <p class="text-secondary lead fs-6">Purpose-built features designed to empower candidate growth and employer
+                efficiency.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Service 1 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="pillar-card-modern pillar-blue shadow-sm">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-3 p-3 d-inline-block mb-3 fs-3">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2 text-dark">AI Resume Parsing & Digitization</h5>
+                    <p class="text-secondary small mb-0" style="line-height: 1.7;">
+                        Converts raw PDF and Word resumes into structured skill taxonomies, automatically populating
+                        technical competencies, education, and years of experience.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Service 2 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="pillar-card-modern pillar-green shadow-sm">
+                    <div class="bg-success bg-opacity-10 text-success rounded-3 p-3 d-inline-block mb-3 fs-3">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2 text-dark">Machine Learning Matching Engine</h5>
+                    <p class="text-secondary small mb-0" style="line-height: 1.7;">
+                        Multi-factor TF-IDF algorithm comparing candidate attributes with job requirements, computing
+                        real-time match percentages from 0% to 100%.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Service 3 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="pillar-card-modern pillar-amber shadow-sm">
+                    <div class="bg-warning bg-opacity-10 text-warning rounded-3 p-3 d-inline-block mb-3 fs-3">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2 text-dark">AI Career Guidance Copilot</h5>
+                    <p class="text-secondary small mb-0" style="line-height: 1.7;">
+                        Interactive step-by-step diagnostic questionnaire offering personalized job recommendations,
+                        skill gap insights, and interview tips.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Service 4 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="pillar-card-modern pillar-blue shadow-sm">
+                    <div class="bg-info bg-opacity-10 text-info rounded-3 p-3 d-inline-block mb-3 fs-3">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2 text-dark">Direct Messaging Center</h5>
+                    <p class="text-secondary small mb-0" style="line-height: 1.7;">
+                        Secure direct messaging thread between recruiters and applicants with real-time notification
+                        alerts and application feedback remarks.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Service 5 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="pillar-card-modern pillar-green shadow-sm">
+                    <div class="bg-success bg-opacity-10 text-success rounded-3 p-3 d-inline-block mb-3 fs-3">
+                        <i class="fa-solid fa-video"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2 text-dark">Online Interview Scheduler</h5>
+                    <p class="text-secondary small mb-0" style="line-height: 1.7;">
+                        Schedule technical and HR interviews with date/time pickers, candidate calendar notifications,
+                        and 1-click meeting link launchers.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Service 6 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="pillar-card-modern pillar-amber shadow-sm">
+                    <div class="bg-danger bg-opacity-10 text-danger rounded-3 p-3 d-inline-block mb-3 fs-3">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2 text-dark">Security Audit Trail & Analytics</h5>
+                    <p class="text-secondary small mb-0" style="line-height: 1.7;">
+                        Immutable audit logs tracking all administrative operations, candidate status transitions, IP
+                        addresses, and executive hiring analytics.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =========================================================================
+     3. 4-STEP RECRUITMENT LIFECYCLE
+     ========================================================================= -->
+<section class="py-5 py-lg-6" style="background-color: var(--surface-bg);">
+    <div class="container text-center">
+        <span
+            class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 rounded-pill fw-bold mb-2">Workflow</span>
+        <h2 class="fw-bold fs-1 text-dark mb-5">How Multibiz Works</h2>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="custom-card p-4 h-100 bg-white border-0 shadow-sm rounded-4 text-center">
+                    <div class="display-6 fw-extrabold text-primary mb-2">01</div>
+                    <h6 class="fw-bold text-dark mb-2">Profile & Resume Setup</h6>
+                    <p class="text-muted small mb-0">Upload resume document for automatic parsing and taxonomy
+                        identification.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="custom-card p-4 h-100 bg-white border-0 shadow-sm rounded-4 text-center">
+                    <div class="display-6 fw-extrabold text-info mb-2">02</div>
+                    <h6 class="fw-bold text-dark mb-2">AI Match Scoring</h6>
+                    <p class="text-muted small mb-0">Algorithms rank and categorize applicants into multi-tier
+                        compatibility scores.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="custom-card p-4 h-100 bg-white border-0 shadow-sm rounded-4 text-center">
+                    <div class="display-6 fw-extrabold text-warning mb-2">03</div>
+                    <h6 class="fw-bold text-dark mb-2">Candidate Evaluation</h6>
+                    <p class="text-muted small mb-0">Hiring teams review candidate dossiers, log remarks, and shortlist
+                        talent.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="custom-card p-4 h-100 bg-white border-0 shadow-sm rounded-4 text-center">
+                    <div class="display-6 fw-extrabold text-success mb-2">04</div>
+                    <h6 class="fw-bold text-dark mb-2">Interview & Placement</h6>
+                    <p class="text-muted small mb-0">Book video interview rounds, share meeting links, and finalize
+                        employment offers.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

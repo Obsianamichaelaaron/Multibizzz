@@ -1,0 +1,12 @@
+Hello, {{ employer_name }}!
+
+Our recruitment team has evaluated all applicants and compiled verified, qualified candidates for your hiring request: {{ employer_request.title }}.
+
+Total Qualified Candidates: {{ candidate_count }}
+All candidates have been evaluated and ranked via Talent Radar (#1 Top Match identified).
+
+Review your candidates and make selection decisions at:
+{{ site_url }}applications/employer/recommended-candidates/?request_id={{ employer_request.id }}
+
+Thank you,
+Multibiz Talent Solutions
