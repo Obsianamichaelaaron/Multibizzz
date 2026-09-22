@@ -1,0 +1,25 @@
+# Legacy PHP directory
+public_html/
+
+# Static files cache and media uploads
+staticfiles/
+media/
+!media/.gitkeep
+
+# Database and data dumps
+*.sqlite3
+*.sql
+
+# Testing suite and scratch scripts
+tests/
+test_migration.py
+
+# Local configuration and credentials
+.env
+*.json
+!client_secret_*.json
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*.pyo
